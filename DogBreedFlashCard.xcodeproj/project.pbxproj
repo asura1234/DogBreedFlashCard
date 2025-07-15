@@ -37,6 +37,7 @@
 				Game/Tests/DogBreedGuesserGameTests.swift,
 				Game/Tests/FakeDogAPIService.swift,
 				Services/Tests/DogAPIServiceTests.swift,
+				Models/Tests/BreedAndBreedGroupTests.swift,
 			);
 			target = 48B311582E260F6B00100627 /* DogBreedFlashCard */;
 		};
@@ -47,6 +48,7 @@
 				Game/Tests/DogBreedGuesserGameTests.swift,
 				Game/Tests/FakeDogAPIService.swift,
 				Services/Tests/DogAPIServiceTests.swift,
+				Models/Tests/BreedAndBreedGroupTests.swift,
 			);
 			target = 48B311652E260F6E00100627 /* DogBreedFlashCardTests */;
 		};
