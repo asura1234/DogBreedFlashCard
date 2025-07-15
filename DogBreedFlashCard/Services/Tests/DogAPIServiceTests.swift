@@ -3,12 +3,11 @@ import Foundation
 @testable import DogBreedFlashCard
 
 struct DogAPIServiceTests {
+    // Given
+    let apiService = DogAPIService()
     
     @Test("Fetch random dog image returns valid DogImage")
     func testFetchRandomDogImageSuccess() async throws {
-        // Given
-        let apiService = await DogAPIService()
-        
         // When
         let dogImage = try await apiService.fetchRandomDogImage()
         
@@ -23,9 +22,6 @@ struct DogAPIServiceTests {
     
     @Test("Fetch random dog image breed extraction works correctly")
     func testBreedExtractionFromURL() async throws {
-        // Given
-        let apiService = await DogAPIService()
-        
         // When
         let dogImage = try await apiService.fetchRandomDogImage()
         
@@ -42,9 +38,6 @@ struct DogAPIServiceTests {
     
     @Test("Multiple fetch random dog image calls return different results")
     func testMultipleFetchCallsReturnDifferentResults() async throws {
-        // Given
-        let apiService = await DogAPIService()
-        
         // When
         let dogImage1 = try await apiService.fetchRandomDogImage()
         let dogImage2 = try await apiService.fetchRandomDogImage()
@@ -62,9 +55,6 @@ struct DogAPIServiceTests {
     
     @Test("Fetch all breeds returns valid breed groups")
     func testFetchAllBreedsSuccess() async throws {
-        // Given
-        let apiService = await DogAPIService()
-        
         // When
         let groups = try await apiService.fetchAllBreeds()
         
@@ -80,9 +70,6 @@ struct DogAPIServiceTests {
     
     @Test("Fetch all breeds contains expected common breeds")
     func testFetchAllBreedsContainsCommonBreeds() async throws {
-        // Given
-        let apiService = await DogAPIService()
-        
         // When
         let groups = try await apiService.fetchAllBreeds()
         let mainBreeds = groups.map { $0.mainBreed }
@@ -98,9 +85,6 @@ struct DogAPIServiceTests {
     
     @Test("Fetch all breeds has proper sub-breed structure")
     func testFetchAllBreedsSubBreedStructure() async throws {
-        // Given
-        let apiService = await DogAPIService()
-        
         // When
         let groups = try await apiService.fetchAllBreeds()
         
@@ -174,7 +158,6 @@ struct DogAPIServiceTests {
     @Test("Random dog image breed exists in complete breeds list")
     func testRandomDogImageBreedExistsInAllBreedsList() async throws {
         // Given
-        let apiService = await DogAPIService()
         let groups = try await apiService.fetchAllBreeds()
         let allBreedNames = groups.flatMap { $0.names }
         

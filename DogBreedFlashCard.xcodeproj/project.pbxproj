@@ -29,9 +29,36 @@
 		48B311702E260F6E00100627 /* DogBreedFlashCardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogBreedFlashCardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		48B681CC2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCard" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Game/Tests/DogBreedGuesserGameFactoryTests.swift,
+				Game/Tests/DogBreedGuesserGameTests.swift,
+				Game/Tests/FakeDogAPIService.swift,
+				Services/Tests/DogAPIServiceTests.swift,
+			);
+			target = 48B311582E260F6B00100627 /* DogBreedFlashCard */;
+		};
+		48B681CD2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCardTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Game/Tests/DogBreedGuesserGameFactoryTests.swift,
+				Game/Tests/DogBreedGuesserGameTests.swift,
+				Game/Tests/FakeDogAPIService.swift,
+				Services/Tests/DogAPIServiceTests.swift,
+			);
+			target = 48B311652E260F6E00100627 /* DogBreedFlashCardTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		48B3115B2E260F6B00100627 /* DogBreedFlashCard */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				48B681CC2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCard" target */,
+				48B681CD2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCardTests" target */,
+			);
 			path = DogBreedFlashCard;
 			sourceTree = "<group>";
 		};
