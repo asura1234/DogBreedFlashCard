@@ -31,9 +31,8 @@ struct Breed: Equatable {
         subBreed.map { "\($0.capitalized) \(mainBreed.capitalized)" } ?? mainBreed.capitalized
     }
     
-    public static func ==(lhs: Breed, rhs: Breed) -> Bool {
-        return lhs.mainBreed == rhs.mainBreed &&
-               lhs.subBreed == rhs.subBreed
+    public static func == (lhs: Breed, rhs: Breed) -> Bool {
+        return lhs.mainBreed == rhs.mainBreed && lhs.subBreed == rhs.subBreed
     }
     
     init(mainBreed: String, subBreed: String?) {
@@ -46,13 +45,19 @@ struct DogImage {
     let imageURL: String
     let breed: Breed
     
+    init(imageURL: String, breed: Breed) {
+        self.imageURL = imageURL
+        self.breed = breed
+    }
+    
     init(from response: DogImageResponse) {
         self.imageURL = response.message
         
         // Extract breed from URL path
         // URL format: https://images.dog.ceo/breeds/[breed]/[filename]
         guard let url = URL(string: response.message),
-              url.pathComponents.count >= 3 && url.pathComponents[1] == "breeds" else {
+              url.pathComponents.count >= 3 && url.pathComponents[1] == "breeds"
+        else {
             self.breed = Breed(mainBreed: "unknown", subBreed: nil)
             return
         }
@@ -107,7 +112,8 @@ class DogAPIService: ObservableObject {
             let (data, response) = try await session.data(from: url)
             
             guard let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 else {
+                  httpResponse.statusCode == 200
+            else {
                 throw APIError.invalidResponse
             }
             
@@ -137,7 +143,8 @@ class DogAPIService: ObservableObject {
             let (data, response) = try await session.data(from: url)
             
             guard let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 else {
+                  httpResponse.statusCode == 200
+            else {
                 throw APIError.invalidResponse
             }
             
