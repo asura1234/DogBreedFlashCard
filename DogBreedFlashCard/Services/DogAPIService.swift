@@ -48,37 +48,37 @@ protocol DogAPIServiceProtocol {
     func fetchAllBreeds() async throws -> [BreedGroup]
 }
 
+enum DogAPIError: Error, LocalizedError {
+    case invalidURL
+    case noData
+    case decodingError
+    case networkError(Error)
+    case invalidResponse
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "Invalid URL"
+        case .noData:
+            return "No data received"
+        case .decodingError:
+            return "Failed to decode response"
+        case .networkError(let error):
+            return "Network error: \(error.localizedDescription)"
+        case .invalidResponse:
+            return "Invalid response from server"
+        }
+    }
+}
+
 class DogAPIService: DogAPIServiceProtocol {
     private let baseURL = "https://dog.ceo/api"
     private let session = URLSession.shared
     
-    enum APIError: Error, LocalizedError {
-        case invalidURL
-        case noData
-        case decodingError
-        case networkError(Error)
-        case invalidResponse
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidURL:
-                return "Invalid URL"
-            case .noData:
-                return "No data received"
-            case .decodingError:
-                return "Failed to decode response"
-            case .networkError(let error):
-                return "Network error: \(error.localizedDescription)"
-            case .invalidResponse:
-                return "Invalid response from server"
-            }
-        }
-    }
-    
     /// Fetches a random dog image
     func fetchRandomDogImage() async throws -> DogImage {
         guard let url = URL(string: "\(baseURL)/breeds/image/random") else {
-            throw APIError.invalidURL
+            throw DogAPIError.invalidURL
         }
         
         do {
@@ -87,29 +87,29 @@ class DogAPIService: DogAPIServiceProtocol {
             guard let httpResponse = response as? HTTPURLResponse,
                   httpResponse.statusCode == 200
             else {
-                throw APIError.invalidResponse
+                throw DogAPIError.invalidResponse
             }
             
             guard !data.isEmpty else {
-                throw APIError.noData
+                throw DogAPIError.noData
             }
             
             let dogResponse = try JSONDecoder().decode(DogImageResponse.self, from: data)
             return DogImage(from: dogResponse)
             
         } catch _ as DecodingError {
-            throw APIError.decodingError
-        } catch let error as APIError {
+            throw DogAPIError.decodingError
+        } catch let error as DogAPIError {
             throw error
         } catch {
-            throw APIError.networkError(error)
+            throw DogAPIError.networkError(error)
         }
     }
     
     /// Fetches all breeds and their sub-breeds
     func fetchAllBreeds() async throws -> [BreedGroup] {
         guard let url = URL(string: "\(baseURL)/breeds/list/all") else {
-            throw APIError.invalidURL
+            throw DogAPIError.invalidURL
         }
         
         do {
@@ -118,11 +118,11 @@ class DogAPIService: DogAPIServiceProtocol {
             guard let httpResponse = response as? HTTPURLResponse,
                   httpResponse.statusCode == 200
             else {
-                throw APIError.invalidResponse
+                throw DogAPIError.invalidResponse
             }
             
             guard !data.isEmpty else {
-                throw APIError.noData
+                throw DogAPIError.noData
             }
             
             let breedsResponse = try JSONDecoder().decode(AllBreedsResponse.self, from: data)
@@ -137,11 +137,11 @@ class DogAPIService: DogAPIServiceProtocol {
             return breedGroups
             
         } catch _ as DecodingError {
-            throw APIError.decodingError
-        } catch let error as APIError {
+            throw DogAPIError.decodingError
+        } catch let error as DogAPIError {
             throw error
         } catch {
-            throw APIError.networkError(error)
+            throw DogAPIError.networkError(error)
         }
     }
 }

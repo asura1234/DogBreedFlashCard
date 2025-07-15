@@ -2,6 +2,9 @@ import Foundation
 @testable import DogBreedFlashCard
 
 class FakeDogAPIService: DogAPIServiceProtocol {
+    private let isFetchRandomDogImageBroken: Bool
+    private let isFetchAllBreedsBroken: Bool
+    
     private let dogImages: [DogImage] = [
         .init(
             imageURL: "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
@@ -58,15 +61,38 @@ class FakeDogAPIService: DogAPIServiceProtocol {
         .init(mainBreed: "Sheepdog", subBreeds: ["Himalayan"])
     ]
     
+    init(isFetchRandomDogImageBroken: Bool = false, isFetchAllBreedsBroken: Bool = false) {
+        self.isFetchRandomDogImageBroken = isFetchRandomDogImageBroken
+        self.isFetchAllBreedsBroken = isFetchAllBreedsBroken
+    }
+    
     func fetchRandomDogImage() async throws -> DogImage {
-        /// simulate delay of 1 second for testing purposes
-        try await Task.sleep(nanoseconds: 1_000_000_000)
+        guard !isFetchRandomDogImageBroken else {
+            throw DogAPIError.noData
+        }
+        
+        // simulate delay of 1 second for testing purposes
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
         return dogImages[Int.random(in: 0..<dogImages.count)]
     }
     
     func fetchAllBreeds() async throws -> [BreedGroup] {
-        /// simulate delay of 1 second for testing purposes
-        try await Task.sleep(nanoseconds: 1_000_000_000)
+        guard !isFetchAllBreedsBroken else {
+            throw DogAPIError.noData
+        }
+        
+        // simulate delay of 1 second for testing purposes
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
         return breedGroups
+    }
+}
+
+class BrokenDogAPIService: DogAPIServiceProtocol {
+    func fetchRandomDogImage() async throws -> DogImage {
+        throw DogAPIError.noData
+    }
+    
+    func fetchAllBreeds() async throws -> [BreedGroup] {
+        throw DogAPIError.noData
     }
 }
