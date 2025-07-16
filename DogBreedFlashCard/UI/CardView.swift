@@ -111,12 +111,10 @@ struct CardView: View {
             if isCorrect {
                 confettiTrigger += 1
                 showCorrectEmoji = true
-                correctAudioPlayer?.stop()
-                correctAudioPlayer?.play()
+                playCorrectSound()
             } else {
                 showIncorrectEmoji = true
-                incorrectAudioPlayer?.stop()
-                incorrectAudioPlayer?.play()
+                playIncorrectSound()
             }
             
             // Delay the completion callback to allow emoji to be visible
@@ -144,6 +142,18 @@ struct CardView: View {
             incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: url)
             incorrectAudioPlayer?.prepareToPlay()
         }
+    }
+    
+    private func playCorrectSound() {
+        correctAudioPlayer?.stop()
+        correctAudioPlayer?.currentTime = 0
+        correctAudioPlayer?.play()
+    }
+    
+    private func playIncorrectSound() {
+        incorrectAudioPlayer?.stop()
+        incorrectAudioPlayer?.currentTime = 0
+        incorrectAudioPlayer?.play()
     }
 }
 
