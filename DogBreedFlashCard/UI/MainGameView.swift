@@ -101,6 +101,17 @@ struct MainGameView: View {
                 styledCardView(for: game, at: index)
             }
         }
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    if value.translation.width < -100 && abs(value.translation.width) > abs(value.translation.height) {
+                        withAnimation(.easeOut(duration: 0.3)) {
+                            progressTracker.recordGamePlayed(won: false)
+                            moveToNextGame()
+                        }
+                    }
+                }
+        )
     }
     
     private func styledCardView(for game: DogBreedGuesserGame, at index: Int) -> some View {
