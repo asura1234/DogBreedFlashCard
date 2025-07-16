@@ -75,7 +75,7 @@ struct MainGameView: View {
     }
     
     private var gameView: some View {
-        VStack(spacing: 20) {
+        VStack {
             progressHeader
             gameTitle
             cardStack
@@ -86,10 +86,10 @@ struct MainGameView: View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Number of Games Played: \(progressTracker.numberOfGamesPlayed)")
-                    .font(.footnote)
+                    .font(.body)
                     .foregroundColor(.secondary)
                 Text("Correct answers: \(progressTracker.numberOfGamesWon)")
-                    .font(.footnote)
+                    .font(.body)
                     .foregroundColor(.green)
             }
             Spacer()
