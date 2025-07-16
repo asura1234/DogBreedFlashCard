@@ -1,10 +1,3 @@
-//
-//  DogBreedFlashCardUITests.swift
-//  DogBreedFlashCardUITests
-//
-//  Created by Dylan Liu on 2025/7/15.
-//
-
 import XCTest
 
 final class DogBreedFlashCardUITests: XCTestCase {

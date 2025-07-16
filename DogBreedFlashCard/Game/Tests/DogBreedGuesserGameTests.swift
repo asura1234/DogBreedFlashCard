@@ -69,7 +69,7 @@ struct DogBreedGuesserGameTests {
         var invalidOptionIndexErrorThrown = false
         // When
         do {
-            _ = try game.chooseOption(index: 2)  // Invalid index
+            _ = try game.chooseOption(index: 2)
         } catch DogBreedGuesserGame.GameError.invalidOptionIndex {
             invalidOptionIndexErrorThrown = true
         } catch {

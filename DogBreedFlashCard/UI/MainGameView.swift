@@ -40,9 +40,7 @@ struct MainGameView: View {
             await initializeFactory()
         }
     }
-    
-    // MARK: - View Components
-    
+
     private var loadingView: some View {
         VStack {
             ProgressView()
@@ -144,7 +142,6 @@ struct MainGameView: View {
         errorMessage = nil
         
         do {
-            // Create the game factory once and reuse it
             gameFactory = try await DogBreedGuesserGameFactory(dogAPIService: DogAPIService())
             await loadMoreGames()
         } catch {
@@ -176,15 +173,11 @@ struct MainGameView: View {
     @MainActor
     private func moveToNextGame() {
         guard !games.isEmpty else { return }
-        
-        // Animate away the first CardView and remove it from the stack
+
         _ = withAnimation(.easeOut(duration: 0.3)) {
-            // Remove the first game from the array
-            // This will automatically remove the corresponding CardView from ZStack
             games.removeFirst()
         }
-        
-        // Check if we need to load more games
+
         if games.count < 10 {
             Task {
                 await loadMoreGames()

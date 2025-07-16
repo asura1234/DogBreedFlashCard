@@ -4,9 +4,9 @@ actor DogBreedGuesserGameFactory {
         case generateNewGameError
     }
     
-    // making this internal for testing purposes
+    // keep this function internal so the test framework can access it
     private(set) var gamesQueue: [DogBreedGuesserGame]
-    // making this internal for testing purposes
+    // keep this function internal so the test framework can access it
     private(set) var allBreedNames: [String]
     
     private let dogAPIService: DogAPIServiceProtocol

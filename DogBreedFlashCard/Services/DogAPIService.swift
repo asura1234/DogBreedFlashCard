@@ -35,7 +35,6 @@ struct DogImage {
         // Handle sub-breeds (e.g., "hound-afghan")
         let breedParts = breedComponent.split(separator: "-")
         if breedParts.count == 2 {
-            // Capitalize and join sub-breeds (e.g., "Afghan Hound")
             self.breed = Breed(mainBreed: String(breedParts[0]), subBreed: String(breedParts[1]))
         } else {
             self.breed = Breed(mainBreed: String(breedParts[0]), subBreed: nil)
@@ -127,7 +126,6 @@ class DogAPIService: DogAPIServiceProtocol {
             
             let breedsResponse = try JSONDecoder().decode(AllBreedsResponse.self, from: data)
             
-            // Transform the response into an array of BreedGroup
             var breedGroups: [BreedGroup] = []
             for (mainBreed, subBreeds) in breedsResponse.message {
                 let group = BreedGroup(mainBreed: mainBreed, subBreeds: subBreeds)
