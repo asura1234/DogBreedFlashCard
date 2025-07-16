@@ -34,7 +34,7 @@ actor DogBreedGuesserGameFactory {
     
     public func getNextGame() throws -> DogBreedGuesserGame {
         Task {
-            await ensureMinimumQuestions()
+            await ensureMinimumGames()
         }
         
         guard !gamesQueue.isEmpty else {
@@ -47,7 +47,7 @@ actor DogBreedGuesserGameFactory {
         gamesQueue = []
         allBreedNames = []
         await fetchAllBreedNames()
-        await ensureMinimumQuestions()
+        await ensureMinimumGames()
     }
     
     private func fetchAllBreedNames() async {
@@ -76,7 +76,7 @@ actor DogBreedGuesserGameFactory {
         return randomWrongBreedName
     }
     
-    private func ensureMinimumQuestions() async {
+    private func ensureMinimumGames() async {
         // If we have less than 20 games queued up, generate new ones concurrently until we have 30
         if gamesQueue.count >= minimumGamesCount { return }
         let gamesNeeded = maximumGamesCount - gamesQueue.count
