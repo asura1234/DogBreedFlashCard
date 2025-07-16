@@ -8,9 +8,6 @@ struct MainGameView: View {
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var gameFactory: DogBreedGuesserGameFactory?
-    @State private var trigger: Int = 0
-    @State private var correctAudioPlayer: AVAudioPlayer?
-    @State private var incorrectAudioPlayer: AVAudioPlayer?
     
     var body: some View {
         Group {
@@ -23,7 +20,6 @@ struct MainGameView: View {
             }
         }
         .task {
-            setupAudioPlayers()
             await initializeFactory()
         }
     }
@@ -102,15 +98,8 @@ struct MainGameView: View {
     private func styledCardView(for game: DogBreedGuesserGame, at index: Int) -> some View {
         CardView(game: game) { hasWon in
             progressTracker.recordGamePlayed(won: hasWon)
-            if hasWon {
-                trigger += 1
-                correctAudioPlayer?.play()
-            } else {
-                incorrectAudioPlayer?.play()
-            }
             moveToNextGame()
         }
-        .confettiCannon(trigger: $trigger, confettiSize: 16)
         .background(Color.white)
         .cornerRadius(15)
         .overlay(
@@ -172,15 +161,4 @@ struct MainGameView: View {
         }
     }
     
-    private func setupAudioPlayers() {
-        if let url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3") {
-            correctAudioPlayer = try? AVAudioPlayer(contentsOf: url)
-            correctAudioPlayer?.prepareToPlay()
-        }
-        
-        if let url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") {
-            incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: url)
-            incorrectAudioPlayer?.prepareToPlay()
-        }
-    }
 }

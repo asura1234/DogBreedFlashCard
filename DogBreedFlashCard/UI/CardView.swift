@@ -1,3 +1,5 @@
+import AVFoundation
+import ConfettiSwiftUI
 import Foundation
 import SwiftUI
 
@@ -7,6 +9,9 @@ struct CardView: View {
     @State private var buttonsDisabled: Bool = false
     @State private var showCorrectEmoji: Bool = false
     @State private var showIncorrectEmoji: Bool = false
+    @State private var confettiTrigger: Int = 0
+    @State private var correctAudioPlayer: AVAudioPlayer?
+    @State private var incorrectAudioPlayer: AVAudioPlayer?
     
     init(
         game: DogBreedGuesserGame,
@@ -88,6 +93,10 @@ struct CardView: View {
             gameButtonsView
         }
         .padding(EdgeInsets(top: 40, leading: 20, bottom: 40, trailing: 20))
+        .confettiCannon(trigger: $confettiTrigger, confettiSize: 16)
+        .onAppear {
+            setupAudioPlayers()
+        }
         .onChange(of: game) { oldGame, newGame in
             resetGame()
         }
@@ -100,9 +109,14 @@ struct CardView: View {
         do {
             let isCorrect = try game.chooseOption(index: index)
             if isCorrect {
+                confettiTrigger += 1
                 showCorrectEmoji = true
+                correctAudioPlayer?.stop()
+                correctAudioPlayer?.play()
             } else {
                 showIncorrectEmoji = true
+                incorrectAudioPlayer?.stop()
+                incorrectAudioPlayer?.play()
             }
             
             // Delay the completion callback to allow emoji to be visible
@@ -118,6 +132,18 @@ struct CardView: View {
         buttonsDisabled = false
         showCorrectEmoji = false
         showIncorrectEmoji = false
+    }
+    
+    private func setupAudioPlayers() {
+        if let url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3") {
+            correctAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+            correctAudioPlayer?.prepareToPlay()
+        }
+        
+        if let url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") {
+            incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+            incorrectAudioPlayer?.prepareToPlay()
+        }
     }
 }
 
