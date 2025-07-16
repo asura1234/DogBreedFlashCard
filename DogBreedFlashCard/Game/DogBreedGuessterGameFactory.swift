@@ -11,11 +11,24 @@ actor DogBreedGuesserGameFactory {
     
     private let dogAPIService: DogAPIServiceProtocol
     
-    init(dogAPIService: DogAPIServiceProtocol) async throws {
+    private let minimumGamesCount: Int
+    
+    private let maximumGamesCount: Int
+    
+    private let maximumLoadFailureCount: Int
+    
+    init(
+        dogAPIService: DogAPIServiceProtocol,
+        minimumGamesCount: Int = 20,
+        maximumGamesCount: Int = 30,
+        maximumLoadFailureCount: Int = 10
+    ) async throws {
         self.dogAPIService = dogAPIService
         self.gamesQueue = []
         self.allBreedNames = []
-        
+        self.minimumGamesCount = minimumGamesCount
+        self.maximumGamesCount = maximumGamesCount
+        self.maximumLoadFailureCount = maximumLoadFailureCount
         await self.reset()
     }
     
@@ -65,14 +78,14 @@ actor DogBreedGuesserGameFactory {
     
     private func ensureMinimumQuestions() async {
         // If we have less than 20 games queued up, generate new ones concurrently until we have 30
-        if gamesQueue.count >= 20 { return }
-        let questionsNeeded = 30 - gamesQueue.count
+        if gamesQueue.count >= minimumGamesCount { return }
+        let gamesNeeded = maximumGamesCount - gamesQueue.count
         
         await withTaskGroup(of: Bool.self) { group in
             var failureCount = 0
-            let maxFailures = 10
+            let maxFailures = maximumLoadFailureCount
             
-            for _ in 0..<questionsNeeded {
+            for _ in 0..<gamesNeeded {
                 group.addTask {
                     do {
                         try await self.generateNewGame()

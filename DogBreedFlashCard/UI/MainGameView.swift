@@ -9,6 +9,14 @@ struct MainGameView: View {
     @State private var errorMessage: String?
     @State private var gameFactory: DogBreedGuesserGameFactory?
     
+    private let maxGames: Int
+    private let minimumGames: Int
+    
+    init(maxGames: Int = 30, minimumGames: Int = 20) {
+        self.maxGames = maxGames
+        self.minimumGames = minimumGames
+    }
+    
     var body: some View {
         Group {
             if isLoading {
@@ -118,7 +126,11 @@ struct MainGameView: View {
         errorMessage = nil
         
         do {
-            gameFactory = try await DogBreedGuesserGameFactory(dogAPIService: DogAPIService())
+            gameFactory = try await DogBreedGuesserGameFactory(
+                dogAPIService: DogAPIService(),
+                minimumGamesCount: minimumGames,
+                maximumGamesCount: maxGames
+            )
             await loadMoreGames()
         } catch {
             errorMessage = "Failed to initialize game factory: \(error.localizedDescription)"
@@ -134,7 +146,9 @@ struct MainGameView: View {
         }
         
         do {
-            for _ in 0..<10 {
+            if games.count >= 20 { return }
+            let gamesNeeded = 30 - games.count
+            for _ in 0..<gamesNeeded {
                 let game = try await factory.getNextGame()
                 games.append(game)
             }
@@ -154,7 +168,7 @@ struct MainGameView: View {
             games.removeFirst()
         }
         
-        if games.count < 10 {
+        if games.count < 20 {
             Task {
                 await loadMoreGames()
             }
