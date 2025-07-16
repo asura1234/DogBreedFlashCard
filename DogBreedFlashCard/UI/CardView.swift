@@ -19,6 +19,7 @@ struct CardView: View {
     ) {
         self.game = game
         self.onGameComplete = onGameComplete
+        setupAudioPlayers()
     }
     
     private var dogImageView: some View {
@@ -94,9 +95,6 @@ struct CardView: View {
         }
         .padding(EdgeInsets(top: 40, leading: 20, bottom: 40, trailing: 20))
         .confettiCannon(trigger: $confettiTrigger, confettiSize: 16)
-        .onAppear {
-            setupAudioPlayers()
-        }
         .onChange(of: game) { oldGame, newGame in
             resetGame()
         }
