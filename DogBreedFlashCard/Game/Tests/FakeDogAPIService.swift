@@ -71,8 +71,9 @@ class FakeDogAPIService: DogAPIServiceProtocol {
             throw DogAPIError.noData
         }
         
-        // simulate delay of 1 second for testing purposes
-        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        // simulate delay for testing purposes
+        let delay = Double.random(in: 0.2...1.0)
+        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * delay))
         return dogImages[Int.random(in: 0..<dogImages.count)]
     }
     
@@ -81,8 +82,9 @@ class FakeDogAPIService: DogAPIServiceProtocol {
             throw DogAPIError.noData
         }
         
-        // simulate delay of 1 second for testing purposes
-        try? await Task.sleep(nanoseconds: 1_000_000_000)
+        // simulate delay for testing purposes
+        let delay = Double.random(in: 0.2...1.0)
+        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * delay))
         return breedGroups
     }
 }
