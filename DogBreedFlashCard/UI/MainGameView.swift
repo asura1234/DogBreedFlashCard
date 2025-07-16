@@ -83,13 +83,10 @@ struct MainGameView: View {
         }
         
         do {
-            // Generate 10 more games and append them to the array
-            // This will automatically create more CardViews in the ZStack
             for _ in 0..<10 {
                 let game = try await factory.getNextGame()
                 games.append(game)
             }
-            
         } catch {
             errorMessage = "Failed to load more games: \(error.localizedDescription)"
         }
@@ -100,19 +97,19 @@ struct MainGameView: View {
     
     @MainActor
     private func moveToNextGame() {
+        guard !games.isEmpty else { return }
+        
         // Animate away the first CardView and remove it from the stack
-        if !games.isEmpty {
-            withAnimation(.easeOut(duration: 0.3)) {
-                // Remove the first game from the array
-                // This will automatically remove the corresponding CardView from ZStack
-                games.removeFirst()
-            }
-            
-            // Check if we need to load more games
-            if games.count < 10 {
-                Task {
-                    await loadMoreGames()
-                }
+        _ = withAnimation(.easeOut(duration: 0.3)) {
+            // Remove the first game from the array
+            // This will automatically remove the corresponding CardView from ZStack
+            games.removeFirst()
+        }
+        
+        // Check if we need to load more games
+        if games.count < 10 {
+            Task {
+                await loadMoreGames()
             }
         }
     }

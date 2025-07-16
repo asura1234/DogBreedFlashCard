@@ -20,7 +20,10 @@ actor DogBreedGuesserGameFactory {
     }
     
     public func getNextGame() async throws -> DogBreedGuesserGame {
-        await ensureMinimumQuestions()
+        Task {
+            await ensureMinimumQuestions()
+        }
+        
         guard !gamesQueue.isEmpty else {
             throw GameFactoryError.getNextGameError
         }
