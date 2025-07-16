@@ -110,7 +110,7 @@ struct MainGameView: View {
             }
             moveToNextGame()
         }
-        .confettiCannon(trigger: $trigger)
+        .confettiCannon(trigger: $trigger, confettiSize: 16)
         .background(Color.white)
         .cornerRadius(15)
         .overlay(

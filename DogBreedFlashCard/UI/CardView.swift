@@ -5,6 +5,8 @@ struct CardView: View {
     private var game: DogBreedGuesserGame
     private var onGameComplete: ((Bool) -> Void)?
     @State private var buttonsDisabled: Bool = false
+    @State private var showCorrectEmoji: Bool = false
+    @State private var showIncorrectEmoji: Bool = false
     
     init(
         game: DogBreedGuesserGame,
@@ -14,8 +16,8 @@ struct CardView: View {
         self.onGameComplete = onGameComplete
     }
     
-    var body: some View {
-        VStack(spacing: 20) {
+    private var dogImageView: some View {
+        ZStack {
             AsyncImage(url: URL(string: game.dogImage.imageURL)) { image in
                 image
                     .resizable()
@@ -36,26 +38,54 @@ struct CardView: View {
                     )
             }
             
-            VStack(spacing: 12) {
-                ForEach(0..<game.options.count, id: \.self) { index in
-                    Button(action: {
-                        handleChoice(at: index)
-                    }) {
-                        Text(game.options[index])
-                            .font(.title2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(buttonsDisabled ? Color.gray : Color.blue)
-                            )
-                    }
-                    .frame(width: 300)
-                    .disabled(buttonsDisabled)
-                }
+            if showCorrectEmoji {
+                Text("✅")
+                    .font(.system(size: 120))
+                    .background(.clear)
+                    .scaleEffect(showCorrectEmoji ? 1.0 : 0.0)
+                    .animation(
+                        .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0), value: showCorrectEmoji)
             }
+            
+            if showIncorrectEmoji {
+                Text("❌")
+                    .font(.system(size: 120))
+                    .background(.clear)
+                    .scaleEffect(showIncorrectEmoji ? 1.0 : 0.0)
+                    .animation(
+                        .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0),
+                        value: showIncorrectEmoji)
+            }
+        }
+    }
+    
+    private var gameButtonsView: some View {
+        VStack(spacing: 12) {
+            ForEach(0..<game.options.count, id: \.self) { index in
+                Button(action: {
+                    handleChoice(at: index)
+                }) {
+                    Text(game.options[index])
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(buttonsDisabled ? Color.gray : Color.blue)
+                        )
+                }
+                .frame(width: 300)
+                .disabled(buttonsDisabled)
+            }
+        }
+    }
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            dogImageView
+            gameButtonsView
         }
         .padding(EdgeInsets(top: 40, leading: 20, bottom: 40, trailing: 20))
         .onChange(of: game) { oldGame, newGame in
@@ -69,7 +99,16 @@ struct CardView: View {
         
         do {
             let isCorrect = try game.chooseOption(index: index)
-            onGameComplete?(isCorrect)
+            if isCorrect {
+                showCorrectEmoji = true
+            } else {
+                showIncorrectEmoji = true
+            }
+            
+            // Delay the completion callback to allow emoji to be visible
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                onGameComplete?(isCorrect)
+            }
         } catch {
             print("Error choosing option: \(error)")
         }
@@ -77,6 +116,8 @@ struct CardView: View {
     
     private func resetGame() {
         buttonsDisabled = false
+        showCorrectEmoji = false
+        showIncorrectEmoji = false
     }
 }
 
