@@ -58,6 +58,9 @@ struct CardView: View {
             }
         }
         .padding(EdgeInsets(top: 40, leading: 20, bottom: 40, trailing: 20))
+        .onChange(of: game) { oldGame, newGame in
+            resetGame()
+        }
     }
     
     private func handleChoice(at index: Int) {
@@ -70,6 +73,10 @@ struct CardView: View {
         } catch {
             print("Error choosing option: \(error)")
         }
+    }
+    
+    private func resetGame() {
+        buttonsDisabled = false
     }
 }
 

@@ -9,22 +9,8 @@ struct MainGameView: View {
     @State private var errorMessage: String?
     @State private var gameFactory: DogBreedGuesserGameFactory?
     @State private var trigger: Int = 0
-    
-    private var incorrectAudioPlayer: AVAudioPlayer? {
-        guard let url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3")
-        else {
-            return nil
-        }
-        return try? AVAudioPlayer(contentsOf: url)
-    }
-    
-    private var correctAudioPlayer: AVAudioPlayer? {
-        guard let url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3")
-        else {
-            return nil
-        }
-        return try? AVAudioPlayer(contentsOf: url)
-    }
+    @State private var correctAudioPlayer: AVAudioPlayer?
+    @State private var incorrectAudioPlayer: AVAudioPlayer?
     
     var body: some View {
         Group {
@@ -37,10 +23,11 @@ struct MainGameView: View {
             }
         }
         .task {
+            setupAudioPlayers()
             await initializeFactory()
         }
     }
-
+    
     private var loadingView: some View {
         VStack {
             ProgressView()
@@ -173,15 +160,27 @@ struct MainGameView: View {
     @MainActor
     private func moveToNextGame() {
         guard !games.isEmpty else { return }
-
+        
         _ = withAnimation(.easeOut(duration: 0.3)) {
             games.removeFirst()
         }
-
+        
         if games.count < 10 {
             Task {
                 await loadMoreGames()
             }
+        }
+    }
+    
+    private func setupAudioPlayers() {
+        if let url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3") {
+            correctAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+            correctAudioPlayer?.prepareToPlay()
+        }
+        
+        if let url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") {
+            incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+            incorrectAudioPlayer?.prepareToPlay()
         }
     }
 }

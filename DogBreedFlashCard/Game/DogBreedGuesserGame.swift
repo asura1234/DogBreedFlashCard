@@ -1,6 +1,10 @@
 import Foundation
 
-struct DogBreedGuesserGame: Identifiable {
+struct DogBreedGuesserGame: Identifiable, Equatable {
+    static func == (lhs: DogBreedGuesserGame, rhs: DogBreedGuesserGame) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     var id: Int
     
     enum GameError: Error {
@@ -24,6 +28,8 @@ struct DogBreedGuesserGame: Identifiable {
         var hasher = Hasher()
         hasher.combine(correctBreedName)
         hasher.combine(wrongBreedName)
+        // Combine current time to ensure uniqueness across instances
+        hasher.combine(Date().timeIntervalSince1970)
         return hasher.finalize()
     }
         
