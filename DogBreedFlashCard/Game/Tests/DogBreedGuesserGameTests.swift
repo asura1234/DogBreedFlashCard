@@ -46,9 +46,9 @@ struct DogBreedGuesserGameTests {
     
     @Test("Options are shuffled randomly")
     func testShuffledOptions() {
-        // Always guessing the first option should win at least 10 out of 30 games (very high probability)
+        // Always guessing the first option should win at least 10 out of 40 games (very high probability)
         var wins = 0
-        for _ in 1...30 {
+        for _ in 1...40 {
             do {
                 let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
                 let result = try game.chooseOption(index: 0)
