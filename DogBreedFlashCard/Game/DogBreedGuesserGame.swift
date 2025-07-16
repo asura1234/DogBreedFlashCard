@@ -1,6 +1,8 @@
 import Foundation
 
-struct DogBreedGuesserGame {
+struct DogBreedGuesserGame: Identifiable {
+    var id: ObjectIdentifier
+    
     enum GameError: Error {
         case invalidOptionIndex
     }
@@ -15,8 +17,16 @@ struct DogBreedGuesserGame {
         self.correctBreedName = dogImage.breed.name
         self.wrongBreedName = wrongBreedName
         self.options = [correctBreedName, wrongBreedName].shuffled()
+        self.id = Self.generateID(correctBreedName: correctBreedName, wrongBreedName: wrongBreedName)
     }
     
+    private static func generateID(correctBreedName: String, wrongBreedName: String) -> ObjectIdentifier {
+        var hasher = Hasher()
+        hasher.combine(correctBreedName)
+        hasher.combine(wrongBreedName)
+        return hasher.finalize()
+    }
+
     // keep this function internal so the test framework can access it
     func isCorrect(option: String) -> Bool {
         return option == correctBreedName

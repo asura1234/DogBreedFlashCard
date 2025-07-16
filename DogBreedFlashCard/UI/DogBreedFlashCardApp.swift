@@ -4,7 +4,7 @@ import SwiftUI
 struct DogBreedFlashCardApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainGameView()
         }
     }
 }

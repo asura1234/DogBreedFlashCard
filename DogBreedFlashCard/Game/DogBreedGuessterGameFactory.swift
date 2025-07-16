@@ -11,7 +11,7 @@ actor DogBreedGuesserGameFactory {
     
     private let dogAPIService: DogAPIServiceProtocol
     
-    init(dogAPIService: DogAPIServiceProtocol) async {
+    init(dogAPIService: DogAPIServiceProtocol) async throws {
         self.dogAPIService = dogAPIService
         self.gamesQueue = []
         self.allBreedNames = []
@@ -61,8 +61,8 @@ actor DogBreedGuesserGameFactory {
     }
     
     private func ensureMinimumQuestions() async {
-        // If we have less than 30 questions, generate new ones concurrently until we have 30
-        if gamesQueue.count >= 30 { return }
+        // If we have less than 20 games queued up, generate new ones concurrently until we have 30
+        if gamesQueue.count >= 20 { return }
         let questionsNeeded = 30 - gamesQueue.count
         
         await withTaskGroup(of: Bool.self) { group in

@@ -6,6 +6,8 @@ import SwiftUI
 struct CardView: View {
     private var game: DogBreedGuesserGame
     private var progressTracker: ProgressTracker
+    private var onGameComplete: (() -> Void)?
+    
     @State private var trigger: Int = 0
     @State private var buttonsDisabled: Bool = false
     
@@ -25,9 +27,14 @@ struct CardView: View {
         return try? AVAudioPlayer(contentsOf: url)
     }
     
-    init(game: DogBreedGuesserGame, progressTracker: ProgressTracker) {
+    init(
+        game: DogBreedGuesserGame,
+        progressTracker: ProgressTracker,
+        onGameComplete: (() -> Void)? = nil
+    ) {
         self.game = game
         self.progressTracker = progressTracker
+        self.onGameComplete = onGameComplete
     }
     
     var body: some View {
@@ -105,10 +112,11 @@ struct CardView: View {
                 progressTracker.recordGamePlayed(won: true)
                 trigger += 1  // triger confetti
                 correctAudioPlayer?.play()
-                
+                onGameComplete?()
             } else {
                 progressTracker.recordGamePlayed(won: false)
                 incorrectAudioPlayer?.play()
+                onGameComplete?()
             }
         } catch {
             print("Error choosing option: \(error)")
