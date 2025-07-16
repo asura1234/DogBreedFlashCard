@@ -66,11 +66,6 @@
 			path = DogBreedFlashCard;
 			sourceTree = "<group>";
 		};
-		48B311692E260F6E00100627 /* Tests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Tests;
-			sourceTree = "<group>";
-		};
 		48B311732E260F6E00100627 /* DogBreedFlashCardUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DogBreedFlashCardUITests;
@@ -107,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				48B3115B2E260F6B00100627 /* DogBreedFlashCard */,
-				48B311692E260F6E00100627 /* Tests */,
 				48B311732E260F6E00100627 /* DogBreedFlashCardUITests */,
 				48B3115A2E260F6B00100627 /* Products */,
 			);
@@ -160,9 +154,6 @@
 			);
 			dependencies = (
 				48B311682E260F6E00100627 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				48B311692E260F6E00100627 /* Tests */,
 			);
 			name = DogBreedFlashCardTests;
 			packageProductDependencies = (
