@@ -19,7 +19,7 @@ actor DogBreedGuesserGameFactory {
         await self.reset()
     }
     
-    public func getNextGame() async throws -> DogBreedGuesserGame {
+    public func getNextGame() throws -> DogBreedGuesserGame {
         Task {
             await ensureMinimumQuestions()
         }

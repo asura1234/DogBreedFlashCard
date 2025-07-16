@@ -1,62 +1,21 @@
-import AVFoundation
-import ConfettiSwiftUI
 import Foundation
 import SwiftUI
 
 struct CardView: View {
     private var game: DogBreedGuesserGame
-    private var progressTracker: ProgressTracker
-    private var onGameComplete: (() -> Void)?
-    
-    @State private var trigger: Int = 0
+    private var onGameComplete: ((Bool) -> Void)?
     @State private var buttonsDisabled: Bool = false
-    
-    private var incorrectAudioPlayer: AVAudioPlayer? {
-        guard let url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3")
-        else {
-            return nil
-        }
-        return try? AVAudioPlayer(contentsOf: url)
-    }
-    
-    private var correctAudioPlayer: AVAudioPlayer? {
-        guard let url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3")
-        else {
-            return nil
-        }
-        return try? AVAudioPlayer(contentsOf: url)
-    }
     
     init(
         game: DogBreedGuesserGame,
-        progressTracker: ProgressTracker,
-        onGameComplete: (() -> Void)? = nil
+        onGameComplete: ((Bool) -> Void)? = nil
     ) {
         self.game = game
-        self.progressTracker = progressTracker
         self.onGameComplete = onGameComplete
     }
     
     var body: some View {
         VStack(spacing: 20) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Number of Games Played: \(progressTracker.numberOfGamesPlayed)")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    Text("Correct answers: \(progressTracker.numberOfGamesWon)")
-                        .font(.footnote)
-                        .foregroundColor(.green)
-                }
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            Text("What breed is this?")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding()
-            
             AsyncImage(url: URL(string: game.dogImage.imageURL)) { image in
                 image
                     .resizable()
@@ -73,7 +32,7 @@ struct CardView: View {
                     .shadow(radius: 8)
                     .overlay(
                         ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
+                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                     )
             }
             
@@ -95,7 +54,6 @@ struct CardView: View {
                     }
                     .frame(width: 300)
                     .disabled(buttonsDisabled)
-                    .confettiCannon(trigger: $trigger)
                 }
             }
         }
@@ -108,16 +66,7 @@ struct CardView: View {
         
         do {
             let isCorrect = try game.chooseOption(index: index)
-            if isCorrect {
-                progressTracker.recordGamePlayed(won: true)
-                trigger += 1  // triger confetti
-                correctAudioPlayer?.play()
-                onGameComplete?()
-            } else {
-                progressTracker.recordGamePlayed(won: false)
-                incorrectAudioPlayer?.play()
-                onGameComplete?()
-            }
+            onGameComplete?(isCorrect)
         } catch {
             print("Error choosing option: \(error)")
         }
@@ -133,7 +82,5 @@ struct CardView: View {
         dogImage: sampleDogImage,
         wrongBreedName: "Husky"
     )
-    let progressTracker = ProgressTracker()
-    
-    CardView(game: sampleGame, progressTracker: progressTracker)
+    CardView(game: sampleGame)
 }
