@@ -4,6 +4,7 @@ import Foundation
 class FakeDogAPIService: DogAPIServiceProtocol {
     private let isFetchRandomDogImageBroken: Bool
     private let isFetchAllBreedsBroken: Bool
+    private let hasRandomDelay: Bool
     
     private let dogImages: [DogImage] = [
         .init(
@@ -61,9 +62,14 @@ class FakeDogAPIService: DogAPIServiceProtocol {
         .init(mainBreed: "Sheepdog", subBreeds: ["Himalayan"])
     ]
     
-    init(isFetchRandomDogImageBroken: Bool = false, isFetchAllBreedsBroken: Bool = false) {
+    init(
+        isFetchRandomDogImageBroken: Bool = false,
+        isFetchAllBreedsBroken: Bool = false,
+        hasRandomDelay: Bool = false
+    ) {
         self.isFetchRandomDogImageBroken = isFetchRandomDogImageBroken
         self.isFetchAllBreedsBroken = isFetchAllBreedsBroken
+        self.hasRandomDelay = hasRandomDelay
     }
     
     func fetchRandomDogImage() async throws -> DogImage {
@@ -71,9 +77,10 @@ class FakeDogAPIService: DogAPIServiceProtocol {
             throw DogAPIError.noData
         }
         
-        // simulate delay for testing purposes
-        let delay = Double.random(in: 0.2...1.0)
-        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * delay))
+        if hasRandomDelay {
+            let delay = Double.random(in: 0.2...1.0)
+            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * delay))
+        }
         return dogImages[Int.random(in: 0..<dogImages.count)]
     }
     
@@ -83,8 +90,10 @@ class FakeDogAPIService: DogAPIServiceProtocol {
         }
         
         // simulate delay for testing purposes
-        let delay = Double.random(in: 0.2...1.0)
-        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * delay))
+        if hasRandomDelay {
+            let delay = Double.random(in: 0.2...1.0)
+            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * delay))
+        }
         return breedGroups
     }
 }
