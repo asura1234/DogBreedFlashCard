@@ -4,7 +4,7 @@ import Testing
 @testable import DogBreedFlashCard
 
 struct BreedAndBreedGroupTests {
-    @Test("Breed is initialized correctly")
+    @Test("Breed is initialized correctly and is not case sensitive to the input parameters")
     func testBreedInitialization() {
         let breed1 = Breed(mainBreed: "poodle", subBreed: nil)
         #expect(breed1.name == "Poodle")
@@ -22,7 +22,7 @@ struct BreedAndBreedGroupTests {
         #expect(breed2.subBreed == "golden")
     }
     
-    @Test("BreedGroup is initialized correctly")
+    @Test("BreedGroup is initialized correctly and is not case sensitive to the input parameters")
     func testBreedGroupInitialization() {
         let breedGroup1 = BreedGroup(mainBreed: "poodle", subBreeds: [])
         
