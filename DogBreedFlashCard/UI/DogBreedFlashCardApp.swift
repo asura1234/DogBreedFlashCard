@@ -4,7 +4,11 @@ import SwiftUI
 struct DogBreedFlashCardApp: App {
     var body: some Scene {
         WindowGroup {
-            MainGameView()
+            if ProcessInfo.processInfo.environment["TESTING"] == "1" {
+                MainGameView(gameFactory: FakeDogBreedGuesserGameFactory())
+            } else {
+                MainGameView()
+            }
         }
     }
 }
