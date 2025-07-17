@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Script to run tests for all local Swift packages
+# Script to run tests for all local Swift packages on iOS Simulator
 set -e
 
-echo "🧪 Running tests for all local Swift packages..."
+echo "🧪 Running tests for all local Swift packages on iOS Simulator..."
 echo "================================================"
 
 # Get the script directory
@@ -37,12 +37,12 @@ TOTAL_COUNT=${#PACKAGE_DIRS[@]}
 
 for PACKAGE_DIR in "${PACKAGE_DIRS[@]}"; do
     PACKAGE_NAME=$(basename "$PACKAGE_DIR")
-    echo "🔍 Testing $PACKAGE_NAME..."
+    echo "🔍 Testing $PACKAGE_NAME on iOS Simulator..."
     echo "----------------------------------------"
     
     cd "$PACKAGE_DIR"
     
-    if swift test; then
+    if xcodebuild test -scheme "$PACKAGE_NAME" -destination "platform=iOS Simulator,name=iPhone 16,OS=latest" -derivedDataPath ".build"; then
         echo "✅ $PACKAGE_NAME tests passed"
         ((SUCCESS_COUNT++))
     else
