@@ -25,6 +25,18 @@ This project demonstrates modern Swift development practices with **modular Swif
 
 Each package is self-contained with clear dependencies, promoting code reusability and maintainability.
 
+This project also demonstrates the use of swift `async throws` over traditional completion handler for asnychronus operation.
+
+### fetching random dog image using completion handler
+```swift
+func fetchRandomDogImage(completion: @escaping Result<DogImage, DogAPIServiceError> -> Void)
+```
+
+### fetching random dog image using async throws
+```swift
+func fetchRandomDogImage() async throws -> DogImage
+```
+
 ## Testing
 
 The project includes **comprehensive test coverage** across all modules:
