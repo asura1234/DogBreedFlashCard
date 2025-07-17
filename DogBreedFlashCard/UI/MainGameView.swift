@@ -181,6 +181,7 @@ struct MainGameView: View {
             let gamesNeeded = maxGames - games.count
             let moreGames = try await factory.getNextGames(count: gamesNeeded)
             games.append(contentsOf: moreGames)
+            errorMessage = nil
         } catch {
             errorMessage = "Failed to load more games: \(error.localizedDescription)"
         }

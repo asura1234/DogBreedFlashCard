@@ -41,7 +41,7 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
         await self.reset()
     }
     
-    public func getNextGames(count: Int) async throws -> [DogBreedGuesserGame] {
+    public func getNextGames(count: Int = 10) async throws -> [DogBreedGuesserGame] {
         if gamesQueue.count > count {
             Task {
                 await ensureMinimumGames()
