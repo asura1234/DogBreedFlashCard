@@ -177,8 +177,8 @@ struct MainGameView: View {
         }
         
         do {
-            if games.count >= 20 { return }
-            let gamesNeeded = 30 - games.count
+            if games.count >= minimumGames { return }
+            let gamesNeeded = maxGames - games.count
             let moreGames = try await factory.getNextGames(count: gamesNeeded)
             games.append(contentsOf: moreGames)
         } catch {
@@ -197,10 +197,8 @@ struct MainGameView: View {
             games.removeFirst()
         }
         
-        if games.count < 20 {
-            Task {
-                await loadMoreGames()
-            }
+        Task {
+            await loadMoreGames()
         }
     }
 }
