@@ -17,6 +17,8 @@ A SwiftUI iOS app that helps users learn dog breeds through an interactive guess
 
 ## Architecture
 
+![System Diagram](GitDiagram.png)
+
 This project demonstrates modern Swift development practices with **modular Swift Package architecture**:
 
 - **GamePackage**: Core game logic, game factory and progress tracking
@@ -25,14 +27,14 @@ This project demonstrates modern Swift development practices with **modular Swif
 
 Each package is self-contained with clear dependencies, promoting code reusability and maintainability.
 
-This project also demonstrates the use of swift `async throws` over traditional completion handler for asnychronus operation.
+This project also demonstrates the use of swift `async throws` over traditional completion handler for asnychronus operation for better code readibility and clearity on execution order.
 
-### fetching random dog image using completion handler
+#### fetching random dog image using completion handler
 ```swift
 func fetchRandomDogImage(completion: @escaping Result<DogImage, DogAPIServiceError> -> Void)
 ```
 
-### fetching random dog image using async throws
+#### fetching random dog image using async throws
 ```swift
 func fetchRandomDogImage() async throws -> DogImage
 ```
