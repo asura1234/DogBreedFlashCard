@@ -1,4 +1,10 @@
-actor DogBreedGuesserGameFactory {
+public protocol GameFactoryProtocol {
+    func getNextGames(count: Int) async throws -> [DogBreedGuesserGame]
+    func reset() async
+}
+
+
+actor DogBreedGuesserGameFactory: GameFactoryProtocol{
     enum GameFactoryError: Error {
         case getNextGameError
         case generateNewGameError
@@ -32,15 +38,17 @@ actor DogBreedGuesserGameFactory {
         await self.reset()
     }
     
-    public func getNextGame() throws -> DogBreedGuesserGame {
-        Task {
+    public func getNextGames(count: Int) async throws -> [DogBreedGuesserGame] {
+        if gamesQueue.count > count {
+            Task {
+                await ensureMinimumGames()
+            }
+        } else {
             await ensureMinimumGames()
         }
-        
-        guard !gamesQueue.isEmpty else {
-            throw GameFactoryError.getNextGameError
-        }
-        return gamesQueue.removeFirst()
+        let result = Array(gamesQueue.prefix(count))
+        gamesQueue.removeFirst(count)
+        return result
     }
     
     public func reset() async {

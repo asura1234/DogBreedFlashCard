@@ -1,11 +1,11 @@
 import Foundation
 
-struct DogBreedGuesserGame: Identifiable, Equatable {
-    static func == (lhs: DogBreedGuesserGame, rhs: DogBreedGuesserGame) -> Bool {
+public struct DogBreedGuesserGame: Identifiable, Equatable {
+    public static func == (lhs: DogBreedGuesserGame, rhs: DogBreedGuesserGame) -> Bool {
         lhs.id == rhs.id
     }
     
-    var id: Int
+    public var id: Int
     
     enum GameError: Error {
         case invalidOptionIndex

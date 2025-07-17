@@ -29,13 +29,9 @@ struct DogBreedGuesserGameFactoryTests {
                 dogAPIService: FakeDogAPIService(hasRandomDelay: true)
             )
             
-            for _ in 1...30 {
-                // add 0.5 seconds delay to simulate human reaction time
-                try? await Task.sleep(nanoseconds: 500_000_000)
-                let _ = try? await gameFactory.getNextGame()
-                let queueCount = await gameFactory.gamesQueue.count
-                #expect(queueCount > 0, "Game factory should never run out of games in the queue")
-            }
+            let _ = try? await gameFactory.getNextGames(count: 30)
+            let queueCount = await gameFactory.gamesQueue.count
+            #expect(queueCount > 0, "Game factory should never run out of games in the queue")
         } catch {
             #expect(Bool(false), "Factory initialization should not throw error: \(error)")
         }
@@ -49,7 +45,7 @@ struct DogBreedGuesserGameFactoryTests {
             )
             
             do {
-                let game = try await gameFactory.getNextGame()
+                let game = try await gameFactory.getNextGames(count: 1).first!
                 #expect(
                     !game.dogImage.imageURL.isEmpty,
                     "getNextGame should return a valid DogBreedGuesserGame with a non-empty image URL"
@@ -104,7 +100,7 @@ struct DogBreedGuesserGameFactoryTests {
             // make sure the games Queue is not full before the reset
             var currentCount = await gameFactory.gamesQueue.count
             while currentCount == 30 {
-                _ = try? await gameFactory.getNextGame()
+                _ = try? await gameFactory.getNextGames(count: 10)
                 currentCount = await gameFactory.gamesQueue.count
             }
             
@@ -129,7 +125,7 @@ struct DogBreedGuesserGameFactoryTests {
         // Then
         do {
             let factory = try await DogBreedGuesserGameFactory(dogAPIService: fakeDogAPIService)
-            _ = try await factory.getNextGame()
+            _ = try await factory.getNextGames(count: 10)
             #expect(Bool(false), "Expected error to be thrown")
         } catch DogBreedGuesserGameFactory.GameFactoryError.getNextGameError {
             // This specific error is expected
@@ -148,7 +144,7 @@ struct DogBreedGuesserGameFactoryTests {
         // Then
         do {
             let brokenFactory = try await DogBreedGuesserGameFactory(dogAPIService: brokenDogAPIService)
-            _ = try await brokenFactory.getNextGame()
+            _ = try await brokenFactory.getNextGames(count: 10)
             #expect(Bool(false), "Expected error to be thrown")
         } catch DogBreedGuesserGameFactory.GameFactoryError.getNextGameError {
             // This specific error is expected

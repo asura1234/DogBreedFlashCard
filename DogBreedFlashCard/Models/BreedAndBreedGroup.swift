@@ -1,6 +1,6 @@
 import Foundation
 
-struct BreedGroup {
+public struct BreedGroup {
     let mainBreed: String
     let subBreeds: [String]
     
@@ -13,7 +13,7 @@ struct BreedGroup {
     }
 }
 
-struct Breed: Equatable {
+public struct Breed: Equatable {
     let mainBreed: String
     let subBreed: String?
     

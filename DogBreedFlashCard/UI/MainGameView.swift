@@ -17,6 +17,13 @@ struct MainGameView: View {
         self.minimumGames = minimumGames
     }
     
+    // this is used for testing purposes
+    init(gameFactory: DogBreedGuesserGameFactory) {
+        self.gameFactory = gameFactory
+        self.maxGames = 30
+        self.minimumGames = 10
+    }
+    
     var body: some View {
         Group {
             if isLoading {
@@ -136,6 +143,11 @@ struct MainGameView: View {
         isLoading = true
         errorMessage = nil
         
+        if gameFactory != nil {
+            isLoading = false
+            return
+        }
+        
         do {
             gameFactory = try await DogBreedGuesserGameFactory(
                 dogAPIService: DogAPIService(),
@@ -159,10 +171,8 @@ struct MainGameView: View {
         do {
             if games.count >= 20 { return }
             let gamesNeeded = 30 - games.count
-            for _ in 0..<gamesNeeded {
-                let game = try await factory.getNextGame()
-                games.append(game)
-            }
+            let moreGames = try await factory.getNextGames(count: gamesNeeded)
+            games.append(contentsOf: moreGames)
         } catch {
             errorMessage = "Failed to load more games: \(error.localizedDescription)"
         }
