@@ -37,6 +37,7 @@ The project includes **comprehensive test coverage** across all modules:
 Run all tests with:
 ```bash
 ./scripts/run_tests.sh
+./scripts/run_ui_tests.sh
 ```
 
 ## Requirements
