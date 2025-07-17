@@ -7,7 +7,7 @@ struct MainGameView: View {
     @State private var progressTracker = ProgressTracker()
     @State private var isLoading = true
     @State private var errorMessage: String?
-    @State private var gameFactory: DogBreedGuesserGameFactory?
+    @State private var gameFactory: GameFactoryProtocol?
     
     private let maxGames: Int
     private let minimumGames: Int
@@ -18,7 +18,7 @@ struct MainGameView: View {
     }
     
     // this is used for testing purposes
-    init(gameFactory: DogBreedGuesserGameFactory) {
+    init(gameFactory: GameFactoryProtocol) {
         self.gameFactory = gameFactory
         self.maxGames = 30
         self.minimumGames = 10
