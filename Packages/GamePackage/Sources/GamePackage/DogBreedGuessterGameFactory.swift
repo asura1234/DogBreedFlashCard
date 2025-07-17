@@ -12,20 +12,20 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
         case getNextGameError
         case generateNewGameError
     }
-    
+
     // keep this function internal so the test framework can access it
     private(set) var gamesQueue: [DogBreedGuesserGame]
     // keep this function internal so the test framework can access it
     private(set) var allBreedNames: [String]
-    
+
     private let dogAPIService: DogAPIServiceProtocol
-    
+
     private let minimumGamesCount: Int
-    
+
     private let maximumGamesCount: Int
-    
+
     private let maximumLoadFailureCount: Int
-    
+
     public init(
         dogAPIService: DogAPIServiceProtocol,
         minimumGamesCount: Int = 20,
@@ -40,7 +40,7 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
         self.maximumLoadFailureCount = maximumLoadFailureCount
         await self.reset()
     }
-    
+
     public func getNextGames(count: Int = 10) async throws -> [DogBreedGuesserGame] {
         if gamesQueue.count > count {
             Task {
@@ -62,14 +62,14 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
             return result
         }
     }
-    
+
     public func reset() async {
         gamesQueue = []
         allBreedNames = []
         await fetchAllBreedNames()
         await ensureMinimumGames()
     }
-    
+
     private func fetchAllBreedNames() async {
         do {
             let groups = try await dogAPIService.fetchAllBreeds()
@@ -79,14 +79,14 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
             allBreedNames = []
         }
     }
-    
+
     private func generateNewGame() async throws {
         let dogImage = try await dogAPIService.fetchRandomDogImage()
         let wrongBreedName = try getRandomWrongBreedName(excludeFrom: [dogImage.breed.name])
         let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
         gamesQueue.append(game)
     }
-    
+
     private func getRandomWrongBreedName(excludeFrom list: [String]) throws -> String {
         guard !allBreedNames.isEmpty,
               let randomWrongBreedName = allBreedNames.filter({ !list.contains($0) }).randomElement()
@@ -95,16 +95,16 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
         }
         return randomWrongBreedName
     }
-    
+
     private func ensureMinimumGames() async {
         // If we have less than 20 games queued up, generate new ones concurrently until we have 30
         if gamesQueue.count >= minimumGamesCount { return }
         let gamesNeeded = maximumGamesCount - gamesQueue.count
-        
+
         await withTaskGroup(of: Bool.self) { group in
             var failureCount = 0
             let maxFailures = maximumLoadFailureCount
-            
+
             for _ in 0..<gamesNeeded {
                 group.addTask {
                     do {
@@ -115,15 +115,13 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
                     }
                 }
             }
-            
+
             // Process results and stop if we hit failure limit
-            for await result in group {
-                if !result {
-                    failureCount += 1
-                    if failureCount >= maxFailures {
-                        group.cancelAll()
-                        break
-                    }
+            for await result in group where result == false {
+                failureCount += 1
+                if failureCount >= maxFailures {
+                    group.cancelAll()
+                    break
                 }
             }
         }

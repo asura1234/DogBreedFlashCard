@@ -12,40 +12,40 @@ struct DogBreedGuesserGameFactoryTests {
             let gameFactory = try await DogBreedGuesserGameFactory(
                 dogAPIService: FakeDogAPIService(hasRandomDelay: false)
             )
-            
+
             let gamesCount = await gameFactory.gamesQueue.count
             let breedNamesCount = await gameFactory.allBreedNames.count
-            
+
             #expect(gamesCount > 0, "Game factory should have more than 0 games queued up")
-            
+
             #expect(breedNamesCount > 0, "Game factory should have fetched all breed names")
         } catch {
             #expect(Bool(false), "Factory initialization should not throw error: \(error)")
         }
     }
-    
+
     @Test("DogBreedGuesserGameFactory will always have games queued up.")
     func testGamesQueueCount() async {
         do {
             let gameFactory = try await DogBreedGuesserGameFactory(
                 dogAPIService: FakeDogAPIService(hasRandomDelay: true)
             )
-            
-            let _ = try? await gameFactory.getNextGames()
+
+            _ = try? await gameFactory.getNextGames()
             let queueCount = await gameFactory.gamesQueue.count
             #expect(queueCount > 0, "Game factory should never run out of games in the queue")
         } catch {
             #expect(Bool(false), "Factory initialization should not throw error: \(error)")
         }
     }
-    
+
     @Test("DogBreedGuesserGameFactory will return a valid game when getNextGame is called.")
     func testGetNextGame() async {
         do {
             let gameFactory = try await DogBreedGuesserGameFactory(
                 dogAPIService: FakeDogAPIService(hasRandomDelay: false)
             )
-            
+
             do {
                 let game = try await gameFactory.getNextGames(count: 1).first!
                 #expect(
@@ -88,26 +88,26 @@ struct DogBreedGuesserGameFactoryTests {
             #expect(Bool(false), "Factory initialization should not throw error: \(error)")
         }
     }
-    
+
     @Test("DogBreedGuesserGameFactory will reset the game queue when reset is called.")
     func testReset() async {
         do {
             let gameFactory = try await DogBreedGuesserGameFactory(
                 dogAPIService: FakeDogAPIService(hasRandomDelay: false))
-            
+
             let initialCount = await gameFactory.gamesQueue.count
             #expect(
                 initialCount > 0, "Game factory should have games queued up before reset")
-            
+
             // make sure the games Queue is not full before the reset
             var currentCount = await gameFactory.gamesQueue.count
             while currentCount == 30 {
                 _ = try? await gameFactory.getNextGames()
                 currentCount = await gameFactory.gamesQueue.count
             }
-            
+
             await gameFactory.reset()
-            
+
             let finalCount = await gameFactory.gamesQueue.count
             #expect(
                 finalCount == 30,
@@ -117,13 +117,13 @@ struct DogBreedGuesserGameFactoryTests {
             #expect(Bool(false), "Factory initialization should not throw error: \(error)")
         }
     }
-    
+
     @Test("DogBreedGuesserGameFactory will throw error when the games queue is empty.")
     func testGetNextGameError() async {
         // When
         let fakeDogAPIService = FakeDogAPIService(
             isFetchRandomDogImageBroken: true, hasRandomDelay: false)
-        
+
         // Then
         do {
             let factory = try await DogBreedGuesserGameFactory(dogAPIService: fakeDogAPIService)
@@ -137,12 +137,12 @@ struct DogBreedGuesserGameFactoryTests {
             #expect(Bool(false), "Unexpected error thrown: \(error)")
         }
     }
-    
+
     @Test("DogBreedGuesserGameFactory will throw error when there are no breed names available.")
     func testGenerateNewGameError() async {
         // When
         let brokenDogAPIService = FakeDogAPIService(isFetchAllBreedsBroken: true, hasRandomDelay: false)
-        
+
         // Then
         do {
             let brokenFactory = try await DogBreedGuesserGameFactory(dogAPIService: brokenDogAPIService)

@@ -10,21 +10,21 @@ struct MainGameView: View {
     @State private var isInitialLoading = true
     @State private var errorMessage: String?
     @State private var gameFactory: GameFactoryProtocol?
-    
+
     private let maxGames: Int
     private let minimumGames: Int
-    
+
     init(maxGames: Int = 30, minimumGames: Int = 20) {
         self.maxGames = maxGames
         self.minimumGames = minimumGames
     }
-    
+
     init(gameFactory: GameFactoryProtocol) {
         self.gameFactory = gameFactory
         self.maxGames = 30
         self.minimumGames = 10
     }
-    
+
     var body: some View {
         Group {
             if isInitialLoading {
@@ -39,7 +39,7 @@ struct MainGameView: View {
             await initializeFactory()
         }
     }
-    
+
     private var loadingView: some View {
         VStack {
             ProgressView()
@@ -50,7 +50,7 @@ struct MainGameView: View {
                 .padding(.top)
         }
     }
-    
+
     private func errorView(_ errorMessage: String) -> some View {
         VStack {
             Image(systemName: "exclamationmark.triangle")
@@ -72,7 +72,7 @@ struct MainGameView: View {
         }
         .padding()
     }
-    
+
     private var gameView: some View {
         VStack {
             progressHeader
@@ -80,7 +80,7 @@ struct MainGameView: View {
             cardStack
         }
     }
-    
+
     private var progressHeader: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
@@ -97,14 +97,14 @@ struct MainGameView: View {
         }
         .padding(.horizontal)
     }
-    
+
     private var gameTitle: some View {
         Text("Which breed is this?")
             .font(.largeTitle)
             .fontWeight(.bold)
             .padding()
     }
-    
+
     private var cardStack: some View {
         ZStack {
             ForEach(Array(games.enumerated()), id: \.offset) { index, game in
@@ -117,8 +117,7 @@ struct MainGameView: View {
             DragGesture()
                 .onEnded { value in
                     if value.translation.width < -100
-                        && abs(value.translation.width) > abs(value.translation.height)
-                    {
+                        && abs(value.translation.width) > abs(value.translation.height) {
                         withAnimation(.easeOut(duration: 0.3)) {
                             progressTracker.recordGamePlayed(won: false)
                             moveToNextGame()
@@ -127,7 +126,7 @@ struct MainGameView: View {
                 }
         )
     }
-    
+
     private func styledCardView(for game: DogBreedGuesserGame, at index: Int) -> some View {
         CardView(game: game) { hasWon in
             progressTracker.recordGamePlayed(won: hasWon)
@@ -144,18 +143,18 @@ struct MainGameView: View {
         .scaleEffect(index == 0 ? 1.0 : 0.8)
         .zIndex(Double(games.count - index))
     }
-    
+
     @MainActor
     private func initializeFactory() async {
         isInitialLoading = true
         errorMessage = nil
-        
+
         if gameFactory != nil {
             await loadMoreGames()
             isInitialLoading = false
             return
         }
-        
+
         do {
             gameFactory = try await DogBreedGuesserGameFactory(
                 dogAPIService: DogAPIService(),
@@ -168,14 +167,14 @@ struct MainGameView: View {
             isInitialLoading = false
         }
     }
-    
+
     @MainActor
     private func loadMoreGames() async {
         guard let factory = gameFactory else {
             errorMessage = "Game factory not initialized"
             return
         }
-        
+
         do {
             if games.count >= minimumGames { return }
             let gamesNeeded = maxGames - games.count
@@ -188,15 +187,15 @@ struct MainGameView: View {
 
         isInitialLoading = false
     }
-    
+
     @MainActor
     private func moveToNextGame() {
         guard !games.isEmpty else { return }
-        
+
         _ = withAnimation(.easeOut(duration: 0.3)) {
             games.removeFirst()
         }
-        
+
         Task {
             await loadMoreGames()
         }

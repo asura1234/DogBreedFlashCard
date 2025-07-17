@@ -2,9 +2,9 @@ import Foundation
 import ModelsPackage
 
 public class FakeDogBreedGuesserGameFactory: GameFactoryProtocol {
-    
+
     public init() {}
-    
+
     public func getNextGames(count: Int) async throws -> [DogBreedGuesserGame] {
         Array(
             repeating:
@@ -19,6 +19,6 @@ public class FakeDogBreedGuesserGameFactory: GameFactoryProtocol {
             count: count
         )
     }
-    
+
     public func reset() async {}
 }

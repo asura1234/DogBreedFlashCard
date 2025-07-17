@@ -14,7 +14,7 @@ struct CardView: View {
     @State private var confettiTrigger: Int = 0
     @State private var correctAudioPlayer: AVAudioPlayer?
     @State private var incorrectAudioPlayer: AVAudioPlayer?
-    
+
     init(
         game: DogBreedGuesserGame,
         onGameComplete: ((Bool) -> Void)? = nil
@@ -22,7 +22,7 @@ struct CardView: View {
         self.game = game
         self.onGameComplete = onGameComplete
     }
-    
+
     private var dogImageView: some View {
         ZStack {
             AsyncImage(url: URL(string: game.dogImage.imageURL)) { image in
@@ -44,7 +44,7 @@ struct CardView: View {
                             .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                     )
             }
-            
+
             if showCorrectEmoji {
                 Text("✅")
                     .font(.system(size: 120))
@@ -53,7 +53,7 @@ struct CardView: View {
                     .animation(
                         .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0), value: showCorrectEmoji)
             }
-            
+
             if showIncorrectEmoji {
                 Text("❌")
                     .font(.system(size: 120))
@@ -65,7 +65,7 @@ struct CardView: View {
             }
         }
     }
-    
+
     private var gameButtonsView: some View {
         VStack(spacing: 12) {
             ForEach(0..<game.options.count, id: \.self) { index in
@@ -90,7 +90,7 @@ struct CardView: View {
             }
         }
     }
-    
+
     var body: some View {
         VStack(spacing: 20) {
             dogImageView
@@ -98,18 +98,18 @@ struct CardView: View {
         }
         .padding(EdgeInsets(top: 40, leading: 20, bottom: 40, trailing: 20))
         .confettiCannon(trigger: $confettiTrigger, confettiSize: 16)
-        .onChange(of: game) { oldGame, newGame in
+        .onChange(of: game) { _, _ in
             resetGame()
         }
         .onAppear {
             setupAudioPlayers()
         }
     }
-    
+
     private func handleChoice(at index: Int) {
         // Disable all buttons immediately to prevent the user from making multiple choices in the same round
         buttonsDisabled = true
-        
+
         do {
             let isCorrect = try game.chooseOption(index: index)
             if isCorrect {
@@ -120,7 +120,7 @@ struct CardView: View {
                 showIncorrectEmoji = true
                 playIncorrectSound()
             }
-            
+
             // Delay the completion callback to allow emoji to be visible
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 onGameComplete?(isCorrect)
@@ -129,13 +129,13 @@ struct CardView: View {
             print("Error choosing option: \(error)")
         }
     }
-    
+
     private func resetGame() {
         buttonsDisabled = false
         showCorrectEmoji = false
         showIncorrectEmoji = false
     }
-    
+
     private func setupAudioPlayers() {
         guard let correct_url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3"), let incorrect_url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") else {
             return
@@ -145,13 +145,13 @@ struct CardView: View {
         incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: incorrect_url)
             incorrectAudioPlayer?.prepareToPlay()
     }
-    
+
     private func playCorrectSound() {
         correctAudioPlayer?.stop()
         correctAudioPlayer?.currentTime = 0
         correctAudioPlayer?.play()
     }
-    
+
     private func playIncorrectSound() {
         incorrectAudioPlayer?.stop()
         incorrectAudioPlayer?.currentTime = 0

@@ -14,19 +14,19 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../ModelsPackage"),
-        .package(path: "../ServicesPackage"),
+        .package(path: "../ServicesPackage")
     ],
     targets: [
         .target(
             name: "GamePackage",
             dependencies: [
                 "ModelsPackage",
-                "ServicesPackage",
+                "ServicesPackage"
             ]
         ),
         .testTarget(
             name: "GamePackageTests",
             dependencies: ["GamePackage"]
-        ),
+        )
     ]
 )
