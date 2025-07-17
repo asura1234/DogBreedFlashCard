@@ -1,3 +1,4 @@
 DogBreedFlashCard.xcodeproj/xcuserdata/
 Packages/**/.swiftpm/
 Packages/**/.build/
+.build/

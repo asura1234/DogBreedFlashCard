@@ -11,6 +11,7 @@ excluded:
   - DogBreedFlashCard.xcodeproj
   - UITests
   - DogBreedFlashCardUITests
+  - .build
 
 # Disable some rules that might be too strict for this project
 disabled_rules:
