@@ -9,8 +9,11 @@ A SwiftUI iOS app that helps users learn dog breeds through an interactive guess
 - Progress tracking throughout gameplay
 - Clean, intuitive user interface
 
-## Backend
-This project is based this public and free API: https://dog.ceo/dog-api/documentation
+## Dependencies
+This project is based on [Dog API](https://dog.ceo/dog-api/documentation)
+This project also uses [ConfettiSwiftUI](https://github.com/simibac/ConfettiSwiftUI)
+The correct audio effect is from https://www.youtube.com/watch?v=mhgOQmwaic4&list=PPSV
+The incorrect audio effect is from https://www.youtube.com/watch?v=D8CjAH9MXx4&list=PPSV
 
 ## Architecture
 
