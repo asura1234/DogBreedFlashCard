@@ -84,6 +84,8 @@ struct CardView: View {
                 }
                 .frame(width: 300)
                 .disabled(buttonsDisabled)
+                .accessibilityIdentifier("BreedButton\(index)")
+                .accessibilityLabel("Breed option: \(game.options[index])")
             }
         }
     }

@@ -86,9 +86,11 @@ struct MainGameView: View {
                 Text("Number of Games Played: \(progressTracker.numberOfGamesPlayed)")
                     .font(.body)
                     .foregroundColor(.secondary)
+                    .accessibilityIdentifier("GamesPlayedLabel")
                 Text("Correct answers: \(progressTracker.numberOfGamesWon)")
                     .font(.body)
                     .foregroundColor(.green)
+                    .accessibilityIdentifier("CorrectAnswersLabel")
             }
             Spacer()
         }
@@ -108,10 +110,14 @@ struct MainGameView: View {
                 styledCardView(for: game, at: index)
             }
         }
+        .accessibilityIdentifier("GameCardStack")
+        .accessibilityLabel("Swipe left to skip to next game")
         .gesture(
             DragGesture()
                 .onEnded { value in
-                    if value.translation.width < -100 && abs(value.translation.width) > abs(value.translation.height) {
+                    if value.translation.width < -100
+                        && abs(value.translation.width) > abs(value.translation.height)
+                    {
                         withAnimation(.easeOut(duration: 0.3)) {
                             progressTracker.recordGamePlayed(won: false)
                             moveToNextGame()
@@ -144,6 +150,7 @@ struct MainGameView: View {
         errorMessage = nil
         
         if gameFactory != nil {
+            await loadMoreGames()
             isLoading = false
             return
         }
