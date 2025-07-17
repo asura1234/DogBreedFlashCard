@@ -5,7 +5,6 @@ import Testing
 @testable import GamePackage
 
 struct DogBreedGuesserGameTests {
-    
     let dogImage = DogImage(
         imageURL: "https://images.dog.ceo/breeds/pembroke/n02113023_1168.jpg",
         breed: Breed(mainBreed: "Pembroke", subBreed: nil))
