@@ -40,6 +40,7 @@
 				Game/Tests/DogBreedGuesserGameFactoryTests.swift,
 				Game/Tests/DogBreedGuesserGameTests.swift,
 				Game/Tests/FakeDogAPIService.swift,
+				Game/Tests/FakeDogBreedGuesserGameFactory.swift,
 				Game/Tests/ProgressTrackerTests.swift,
 				Models/Tests/BreedAndBreedGroupTests.swift,
 				Services/Tests/DogAPIServiceTests.swift,
@@ -66,6 +67,7 @@
 			exceptions = (
 				48B681CC2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCard" target */,
 				48B681CD2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCardTests" target */,
+				482C8F4B2E28800A00488827 /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCardUITests" target */,
 			);
 			path = DogBreedFlashCard;
 			sourceTree = "<group>";
