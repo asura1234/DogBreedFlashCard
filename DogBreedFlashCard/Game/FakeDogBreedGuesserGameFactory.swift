@@ -1,9 +1,7 @@
 import Foundation
 
-@testable import DogBreedFlashCard
-
 class FakeDogBreedGuesserGameFactory: GameFactoryProtocol {
-  func getNextGames(count: Int) async throws -> [DogBreedFlashCard.DogBreedGuesserGame] {
+  func getNextGames(count: Int) async throws -> [DogBreedGuesserGame] {
     Array(
       repeating:
         DogBreedGuesserGame(
