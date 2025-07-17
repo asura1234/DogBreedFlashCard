@@ -89,7 +89,7 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
     
     private func getRandomWrongBreedName(excludeFrom list: [String]) throws -> String {
         guard !allBreedNames.isEmpty,
-              let randomWrongBreedName = allBreedNames.filter({ list.contains($0) }).randomElement()
+              let randomWrongBreedName = allBreedNames.filter({ !list.contains($0) }).randomElement()
         else {
             throw GameFactoryError.generateNewGameError
         }
