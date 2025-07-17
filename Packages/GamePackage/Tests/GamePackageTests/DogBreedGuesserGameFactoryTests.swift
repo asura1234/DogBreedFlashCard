@@ -47,6 +47,7 @@ struct DogBreedGuesserGameFactoryTests {
             )
 
             do {
+                // swiftlint:disable:next force_unwrapping
                 let game = try await gameFactory.getNextGames(count: 1).first!
                 #expect(
                     !game.dogImage.imageURL.isEmpty,
@@ -70,6 +71,7 @@ struct DogBreedGuesserGameFactoryTests {
                     "getNextGame should return a valid DogBreedGuesserGame where the correct breed name is in the list of all breed names"
                 )
                 #expect(
+                    // swiftlint:disable:next force_unwrapping
                     allBreedNames.contains(game.options.first { $0 != game.dogImage.breed.name }!),
                     "getNextGame should return a valid DogBreedGuesserGame where the wrong breed name is in the list of all breed names"
                 )

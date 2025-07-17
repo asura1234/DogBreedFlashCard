@@ -1,0 +1,33 @@
+# SwiftLint Configuration File
+
+# Line length configuration
+line_length:
+  warning: 150
+  error: 150
+
+# Exclude directories
+excluded:
+  - Packages/**/.build
+  - DogBreedFlashCard.xcodeproj
+  - UITests
+  - DogBreedFlashCardUITests
+
+# Disable some rules that might be too strict for this project
+disabled_rules:
+  - trailing_whitespace
+  - type_name
+  - identifier_name
+  - function_body_length
+  - file_length
+  - cyclomatic_complexity
+
+# Enable some useful rules
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - overridden_super_call
+  - redundant_nil_coalescing
+  - sorted_imports
+  - unused_import
+  - vertical_whitespace 

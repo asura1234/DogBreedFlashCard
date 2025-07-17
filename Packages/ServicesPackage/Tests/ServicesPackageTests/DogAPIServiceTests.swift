@@ -74,7 +74,7 @@ struct DogAPIServiceTests {
         #expect(!groups.isEmpty, "Should return at least one breed group")
         #expect(groups.count > 50, "Should return many breed groups (API has 100+ breeds)")
 
-        // Check structure of first breed group
+        // swiftlint:disable:next force_unwrapping
         let firstGroup = groups.first!
         #expect(!firstGroup.mainBreed.isEmpty, "Main breed should not be empty")
         #expect(
@@ -202,6 +202,7 @@ struct DogAPIServiceTests {
           "status": "success"
       }
       """
+        // swiftlint:disable:next force_unwrapping
         let jsonData = jsonString.data(using: .utf8)!
 
         // When
@@ -227,6 +228,7 @@ struct DogAPIServiceTests {
           "status": "success"
       }
       """
+        // swiftlint:disable:next force_unwrapping
         let jsonData = jsonString.data(using: .utf8)!
 
         // When
@@ -253,6 +255,7 @@ struct DogAPIServiceTests {
           "status": "error"
       }
       """
+        // swiftlint:disable:next force_unwrapping
         let jsonData = jsonString.data(using: .utf8)!
 
         // When & Then
@@ -270,6 +273,7 @@ struct DogAPIServiceTests {
           "status": "error"
       }
       """
+        // swiftlint:disable:next force_unwrapping
         let jsonData = jsonString.data(using: .utf8)!
 
         // When

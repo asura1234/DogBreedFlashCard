@@ -14,7 +14,7 @@ struct CardView: View {
     @State private var confettiTrigger: Int = 0
     @State private var correctAudioPlayer: AVAudioPlayer?
     @State private var incorrectAudioPlayer: AVAudioPlayer?
-
+    
     init(
         game: DogBreedGuesserGame,
         onGameComplete: ((Bool) -> Void)? = nil
@@ -22,7 +22,7 @@ struct CardView: View {
         self.game = game
         self.onGameComplete = onGameComplete
     }
-
+    
     private var dogImageView: some View {
         ZStack {
             AsyncImage(url: URL(string: game.dogImage.imageURL)) { image in
@@ -44,7 +44,7 @@ struct CardView: View {
                             .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                     )
             }
-
+            
             if showCorrectEmoji {
                 Text("✅")
                     .font(.system(size: 120))
@@ -53,7 +53,7 @@ struct CardView: View {
                     .animation(
                         .spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0), value: showCorrectEmoji)
             }
-
+            
             if showIncorrectEmoji {
                 Text("❌")
                     .font(.system(size: 120))
@@ -65,24 +65,25 @@ struct CardView: View {
             }
         }
     }
-
+    
     private var gameButtonsView: some View {
         VStack(spacing: 12) {
             ForEach(0..<game.options.count, id: \.self) { index in
-                Button(action: {
-                    handleChoice(at: index)
-                }) {
-                    Text(game.options[index])
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(buttonsDisabled ? Color.gray : Color.blue)
-                        )
-                }
+                Button(
+                    action: { handleChoice(at: index) },
+                    label: {
+                        Text(game.options[index])
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(buttonsDisabled ? Color.gray : Color.blue)
+                            )
+                    }
+                )
                 .frame(width: 300)
                 .disabled(buttonsDisabled)
                 .accessibilityIdentifier("BreedButton\(index)")
@@ -90,7 +91,7 @@ struct CardView: View {
             }
         }
     }
-
+    
     var body: some View {
         VStack(spacing: 20) {
             dogImageView
@@ -105,11 +106,11 @@ struct CardView: View {
             setupAudioPlayers()
         }
     }
-
+    
     private func handleChoice(at index: Int) {
         // Disable all buttons immediately to prevent the user from making multiple choices in the same round
         buttonsDisabled = true
-
+        
         do {
             let isCorrect = try game.chooseOption(index: index)
             if isCorrect {
@@ -120,7 +121,7 @@ struct CardView: View {
                 showIncorrectEmoji = true
                 playIncorrectSound()
             }
-
+            
             // Delay the completion callback to allow emoji to be visible
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 onGameComplete?(isCorrect)
@@ -129,29 +130,30 @@ struct CardView: View {
             print("Error choosing option: \(error)")
         }
     }
-
+    
     private func resetGame() {
         buttonsDisabled = false
         showCorrectEmoji = false
         showIncorrectEmoji = false
     }
-
+    
     private func setupAudioPlayers() {
-        guard let correct_url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3"), let incorrect_url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") else {
+        guard let correct_url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3"),
+              let incorrect_url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") else {
             return
         }
         correctAudioPlayer = try? AVAudioPlayer(contentsOf: correct_url)
         correctAudioPlayer?.prepareToPlay()
         incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: incorrect_url)
-            incorrectAudioPlayer?.prepareToPlay()
+        incorrectAudioPlayer?.prepareToPlay()
     }
-
+    
     private func playCorrectSound() {
         correctAudioPlayer?.stop()
         correctAudioPlayer?.currentTime = 0
         correctAudioPlayer?.play()
     }
-
+    
     private func playIncorrectSound() {
         incorrectAudioPlayer?.stop()
         incorrectAudioPlayer?.currentTime = 0
