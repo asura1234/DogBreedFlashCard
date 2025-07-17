@@ -19,7 +19,7 @@ A SwiftUI iOS app that helps users learn dog breeds through an interactive guess
 
 This project demonstrates modern Swift development practices with **modular Swift Package architecture**:
 
-- **GamePackage**: Core game logic and progress tracking
+- **GamePackage**: Core game logic, game factory and progress tracking
     - **ModelsPackage**: Data models for breeds and images  
     - **ServicesPackage**: API service for fetching dog images
 
