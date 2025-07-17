@@ -15,14 +15,14 @@ public protocol DogAPIServiceProtocol {
     func fetchAllBreeds() async throws -> [BreedGroup]
 }
 
-enum DogAPIError: Error, LocalizedError {
+public enum DogAPIError: Error, LocalizedError {
     case invalidURL
     case noData
     case decodingError
     case networkError(Error)
     case invalidResponse
     
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .invalidURL:
             return "Invalid URL"
@@ -38,12 +38,12 @@ enum DogAPIError: Error, LocalizedError {
     }
 }
 
-class DogAPIService: DogAPIServiceProtocol {
+public class DogAPIService: DogAPIServiceProtocol {
     private let baseURL = "https://dog.ceo/api"
     private let session = URLSession.shared
     
     /// Fetches a random dog image
-    func fetchRandomDogImage() async throws -> DogImage {
+    public func fetchRandomDogImage() async throws -> DogImage {
         guard let url = URL(string: "\(baseURL)/breeds/image/random") else {
             throw DogAPIError.invalidURL
         }
@@ -74,7 +74,7 @@ class DogAPIService: DogAPIServiceProtocol {
     }
     
     /// Fetches all breeds and their sub-breeds
-    func fetchAllBreeds() async throws -> [BreedGroup] {
+    public func fetchAllBreeds() async throws -> [BreedGroup] {
         guard let url = URL(string: "\(baseURL)/breeds/list/all") else {
             throw DogAPIError.invalidURL
         }

@@ -4,7 +4,7 @@ public protocol GameFactoryProtocol {
 }
 
 
-actor DogBreedGuesserGameFactory: GameFactoryProtocol{
+public actor DogBreedGuesserGameFactory: GameFactoryProtocol{
     enum GameFactoryError: Error {
         case getNextGameError
         case generateNewGameError

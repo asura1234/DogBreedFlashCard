@@ -1,7 +1,7 @@
 import Foundation
 
-class FakeDogBreedGuesserGameFactory: GameFactoryProtocol {
-  func getNextGames(count: Int) async throws -> [DogBreedGuesserGame] {
+public class FakeDogBreedGuesserGameFactory: GameFactoryProtocol {
+    public func getNextGames(count: Int) async throws -> [DogBreedGuesserGame] {
     Array(
       repeating:
         DogBreedGuesserGame(
@@ -16,5 +16,5 @@ class FakeDogBreedGuesserGameFactory: GameFactoryProtocol {
     )
   }
 
-  func reset() async {}
+    public func reset() async {}
 }

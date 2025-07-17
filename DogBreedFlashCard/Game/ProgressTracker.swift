@@ -1,6 +1,6 @@
 import Foundation
 
-class ProgressTracker{
+public class ProgressTracker{
     private(set) var numberOfGamesPlayed: Int = 0
     private(set) var numberOfGamesWon: Int = 0
     
