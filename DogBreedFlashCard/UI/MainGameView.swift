@@ -98,7 +98,7 @@ struct MainGameView: View {
     }
     
     private var gameTitle: some View {
-        Text("What breed is this?")
+        Text("Which breed is this?")
             .font(.largeTitle)
             .fontWeight(.bold)
             .padding()
