@@ -51,8 +51,14 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
             return result
         } else {
             await ensureMinimumGames()
-            let result = Array(gamesQueue.prefix(count))
-            gamesQueue.removeFirst(count)
+            let actualCount = min(count, gamesQueue.count)
+            let result = Array(gamesQueue.prefix(actualCount))
+            if actualCount > 0 {
+                gamesQueue.removeFirst(actualCount)
+            }
+            if result.count < count {
+                throw GameFactoryError.getNextGameError
+            }
             return result
         }
     }
