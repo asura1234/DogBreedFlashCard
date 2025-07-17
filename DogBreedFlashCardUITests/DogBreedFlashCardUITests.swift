@@ -8,7 +8,6 @@ final class DogBreedFlashCardUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
-        // Set the bundle identifier to the main app, not the test runner
         app.launchArguments = ["-FIRST_LAUNCH"]
         app.launchEnvironment["TESTING"] = "1"
         app.launch()
