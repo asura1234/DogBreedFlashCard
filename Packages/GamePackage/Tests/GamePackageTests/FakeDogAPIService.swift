@@ -99,13 +99,3 @@ class FakeDogAPIService: DogAPIServiceProtocol {
         return breedGroups
     }
 }
-
-class BrokenDogAPIService: DogAPIServiceProtocol {
-    func fetchRandomDogImage() async throws -> DogImage {
-        throw DogAPIError.noData
-    }
-    
-    func fetchAllBreeds() async throws -> [BreedGroup] {
-        throw DogAPIError.noData
-    }
-}
