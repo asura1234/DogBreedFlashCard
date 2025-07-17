@@ -70,12 +70,12 @@ actor DogBreedGuesserGameFactory: GameFactoryProtocol{
     
     private func generateNewGame() async throws {
         let dogImage = try await dogAPIService.fetchRandomDogImage()
-        let wrongBreedName = try getRandomWrongBreedName(excludefrom: [dogImage.breed.name])
+        let wrongBreedName = try getRandomWrongBreedName(excludeFrom: [dogImage.breed.name])
         let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
         gamesQueue.append(game)
     }
     
-    private func getRandomWrongBreedName(excludefrom list: [String]) throws -> String {
+    private func getRandomWrongBreedName(excludeFrom list: [String]) throws -> String {
         guard !allBreedNames.isEmpty,
               let randomWrongBreedName = allBreedNames.filter({ list.contains($0) }).randomElement()
         else {
