@@ -7,7 +7,7 @@ import SwiftUI
 struct MainGameView: View {
     @State private var games: [DogBreedGuesserGame] = []
     @State private var progressTracker = ProgressTracker()
-    @State private var isLoading = true
+    @State private var isInitialLoading = true
     @State private var errorMessage: String?
     @State private var gameFactory: GameFactoryProtocol?
     
@@ -27,7 +27,7 @@ struct MainGameView: View {
     
     var body: some View {
         Group {
-            if isLoading {
+            if isInitialLoading {
                 loadingView
             } else if let errorMessage = errorMessage {
                 errorView(errorMessage)
@@ -147,12 +147,12 @@ struct MainGameView: View {
     
     @MainActor
     private func initializeFactory() async {
-        isLoading = true
+        isInitialLoading = true
         errorMessage = nil
         
         if gameFactory != nil {
             await loadMoreGames()
-            isLoading = false
+            isInitialLoading = false
             return
         }
         
@@ -165,7 +165,7 @@ struct MainGameView: View {
             await loadMoreGames()
         } catch {
             errorMessage = "Failed to initialize game factory: \(error.localizedDescription)"
-            isLoading = false
+            isInitialLoading = false
         }
     }
     
@@ -185,9 +185,8 @@ struct MainGameView: View {
         } catch {
             errorMessage = "Failed to load more games: \(error.localizedDescription)"
         }
-        
-        // Reset loading state if this was initial load
-        isLoading = false
+
+        isInitialLoading = false
     }
     
     @MainActor
