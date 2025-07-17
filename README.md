@@ -21,7 +21,7 @@ This project demonstrates modern Swift development practices with **modular Swif
 
 - **GamePackage**: Core game logic, game factory and progress tracking
     - **ModelsPackage**: Data models for breeds and images  
-    - **ServicesPackage**: API service for fetching dog images
+    - **ServicesPackage**: API service for fetching dog images and breed list
 
 Each package is self-contained with clear dependencies, promoting code reusability and maintainability.
 
