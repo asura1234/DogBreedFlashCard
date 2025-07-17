@@ -21,7 +21,6 @@ struct CardView: View {
     ) {
         self.game = game
         self.onGameComplete = onGameComplete
-        setupAudioPlayers()
     }
     
     private var dogImageView: some View {
@@ -102,6 +101,9 @@ struct CardView: View {
         .onChange(of: game) { oldGame, newGame in
             resetGame()
         }
+        .onAppear {
+            setupAudioPlayers()
+        }
     }
     
     private func handleChoice(at index: Int) {
@@ -135,15 +137,13 @@ struct CardView: View {
     }
     
     private func setupAudioPlayers() {
-        if let url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3") {
-            correctAudioPlayer = try? AVAudioPlayer(contentsOf: url)
-            correctAudioPlayer?.prepareToPlay()
+        guard let correct_url = Bundle.main.url(forResource: "correct_sound_effect", withExtension: "mp3"), let incorrect_url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") else {
+            return
         }
-        
-        if let url = Bundle.main.url(forResource: "incorrect_sound_effect", withExtension: "mp3") {
-            incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: url)
+        correctAudioPlayer = try? AVAudioPlayer(contentsOf: correct_url)
+        correctAudioPlayer?.prepareToPlay()
+        incorrectAudioPlayer = try? AVAudioPlayer(contentsOf: incorrect_url)
             incorrectAudioPlayer?.prepareToPlay()
-        }
     }
     
     private func playCorrectSound() {

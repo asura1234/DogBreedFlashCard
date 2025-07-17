@@ -46,12 +46,15 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
             Task {
                 await ensureMinimumGames()
             }
+            let result = Array(gamesQueue.prefix(count))
+            gamesQueue.removeFirst(count)
+            return result
         } else {
             await ensureMinimumGames()
+            let result = Array(gamesQueue.prefix(count))
+            gamesQueue.removeFirst(count)
+            return result
         }
-        let result = Array(gamesQueue.prefix(count))
-        gamesQueue.removeFirst(count)
-        return result
     }
     
     public func reset() async {
