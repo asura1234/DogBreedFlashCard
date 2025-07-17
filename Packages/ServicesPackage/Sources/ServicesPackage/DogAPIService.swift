@@ -1,4 +1,5 @@
 import Foundation
+import ModelsPackage
 
 struct DogImageResponse: Codable {
     let message: String
@@ -8,6 +9,32 @@ struct DogImageResponse: Codable {
 struct AllBreedsResponse: Codable {
     let message: [String: [String]]
     let status: String
+}
+
+extension DogImage {
+    init(from response: DogImageResponse) {
+        let imageURL = response.message
+        
+        // Extract breed from URL path
+        // URL format: https://images.dog.ceo/breeds/[breed]/[filename]
+        guard let url = URL(string: response.message),
+              url.pathComponents.count >= 3 && url.pathComponents[1] == "breeds"
+        else {
+            self.init(imageURL: imageURL, breed: Breed(mainBreed: "unknown", subBreed: nil))
+            return
+        }
+        
+        let breedComponent = url.pathComponents[2]
+        // Handle sub-breeds (e.g., "hound-afghan")
+        let breedParts = breedComponent.split(separator: "-")
+        if breedParts.count == 2 {
+            let breed = Breed(mainBreed: String(breedParts[0]), subBreed: String(breedParts[1]))
+            self.init(imageURL: imageURL, breed: breed)
+        } else {
+            let breed = Breed(mainBreed: String(breedParts[0]), subBreed: nil)
+            self.init(imageURL: imageURL, breed: breed)
+        }
+    }
 }
 
 public protocol DogAPIServiceProtocol {
@@ -41,6 +68,8 @@ public enum DogAPIError: Error, LocalizedError {
 public class DogAPIService: DogAPIServiceProtocol {
     private let baseURL = "https://dog.ceo/api"
     private let session = URLSession.shared
+    
+    public init() {}
     
     /// Fetches a random dog image
     public func fetchRandomDogImage() async throws -> DogImage {

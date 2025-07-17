@@ -1,7 +1,9 @@
 import Foundation
+import ModelsPackage
+import ServicesPackage
 import Testing
 
-@testable import DogBreedFlashCard
+@testable import GamePackage
 
 struct DogBreedGuesserGameFactoryTests {
     @Test("DogBreedGuesserGameFactory is initialized correctly")

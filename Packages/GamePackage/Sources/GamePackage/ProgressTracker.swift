@@ -1,8 +1,10 @@
 import Foundation
 
-public class ProgressTracker{
-    private(set) var numberOfGamesPlayed: Int = 0
-    private(set) var numberOfGamesWon: Int = 0
+public class ProgressTracker {
+    public private(set) var numberOfGamesPlayed: Int = 0
+    public private(set) var numberOfGamesWon: Int = 0
+    
+    public init() {}
     
     public func recordGamePlayed(won: Bool) {
         if won {

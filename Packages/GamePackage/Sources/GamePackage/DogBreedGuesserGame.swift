@@ -1,4 +1,5 @@
 import Foundation
+import ModelsPackage
 
 public struct DogBreedGuesserGame: Identifiable, Equatable {
     public static func == (lhs: DogBreedGuesserGame, rhs: DogBreedGuesserGame) -> Bool {
@@ -32,7 +33,6 @@ public struct DogBreedGuesserGame: Identifiable, Equatable {
         hasher.combine(Date().timeIntervalSince1970)
         return hasher.finalize()
     }
-        
     
     // keep this function internal so the test framework can access it
     func isCorrect(option: String) -> Bool {

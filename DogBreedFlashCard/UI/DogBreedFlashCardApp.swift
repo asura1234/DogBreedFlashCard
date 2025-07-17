@@ -1,4 +1,5 @@
 import SwiftUI
+import GamePackage
 
 @main
 struct DogBreedFlashCardApp: App {

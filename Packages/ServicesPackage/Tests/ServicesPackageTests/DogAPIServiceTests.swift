@@ -1,6 +1,8 @@
-import Testing
 import Foundation
-@testable import DogBreedFlashCard
+import ModelsPackage
+import Testing
+
+@testable import ServicesPackage
 
 struct DogAPIServiceTests {
     // Given
@@ -30,10 +32,17 @@ struct DogAPIServiceTests {
         #expect(dogImage.breed.name.first?.isUppercase == true, "Breed name should be capitalized")
         
         // Verify breed is not just the raw URL component
-        #expect(dogImage.breed.name.allSatisfy { $0.isLetter
-            || $0.isWhitespace }, "Breed name (\(dogImage.breed.name)) should not contain symbols or numbers")
-        #expect(dogImage.breed.mainBreed.allSatisfy { $0.isLetter }, "mainBreed (\(dogImage.breed.mainBreed)) should not contain symbols or numbers")
-        #expect((dogImage.breed.subBreed?.allSatisfy { $0.isLetter } ?? true), "subBreed (\(dogImage.breed.subBreed ?? "none")) should not contain symbols or numbers")
+        #expect(
+            dogImage.breed.name.allSatisfy {
+                $0.isLetter
+                || $0.isWhitespace
+            }, "Breed name (\(dogImage.breed.name)) should not contain symbols or numbers")
+        #expect(
+            dogImage.breed.mainBreed.allSatisfy { $0.isLetter },
+            "mainBreed (\(dogImage.breed.mainBreed)) should not contain symbols or numbers")
+        #expect(
+            (dogImage.breed.subBreed?.allSatisfy { $0.isLetter } ?? true),
+            "subBreed (\(dogImage.breed.subBreed ?? "none")) should not contain symbols or numbers")
     }
     
     @Test("Multiple fetch random dog image calls return different results")
@@ -46,7 +55,10 @@ struct DogAPIServiceTests {
         let dogImage5 = try await apiService.fetchRandomDogImage()
         
         // Then
-        let imageURLs = [dogImage1.imageURL, dogImage2.imageURL, dogImage3.imageURL, dogImage4.imageURL, dogImage5.imageURL]
+        let imageURLs = [
+            dogImage1.imageURL, dogImage2.imageURL, dogImage3.imageURL, dogImage4.imageURL,
+            dogImage5.imageURL,
+        ]
         let uniqueURLs = Set(imageURLs)
         
         // At least 2 out of 5 should be different (very high probability)
@@ -65,7 +77,8 @@ struct DogAPIServiceTests {
         // Check structure of first breed group
         let firstGroup = groups.first!
         #expect(!firstGroup.mainBreed.isEmpty, "Main breed should not be empty")
-        #expect(firstGroup.mainBreed.allSatisfy { $0.isLetter }, "Main breed should only contain letters")
+        #expect(
+            firstGroup.mainBreed.allSatisfy { $0.isLetter }, "Main breed should only contain letters")
     }
     
     @Test("Fetch all breeds contains expected common breeds")
@@ -129,7 +142,7 @@ struct DogAPIServiceTests {
             (
                 "https://images.dog.ceo/breeds/poodle/n02113799_1001.jpg",
                 Breed(mainBreed: "poodle", subBreed: nil)
-            )
+            ),
         ]
         
         // When & Then
@@ -137,8 +150,9 @@ struct DogAPIServiceTests {
             let response = DogImageResponse(message: testCase.url, status: "success")
             let dogImage = DogImage(from: response)
             
-            #expect(dogImage.breed == testCase.expectedBreed,
-                   "Expected '\(testCase.expectedBreed)' but got '\(dogImage.breed)' for URL: \(testCase.url)")
+            #expect(
+                dogImage.breed == testCase.expectedBreed,
+                "Expected '\(testCase.expectedBreed)' but got '\(dogImage.breed)' for URL: \(testCase.url)")
         }
     }
     
@@ -172,7 +186,10 @@ struct DogAPIServiceTests {
             // The random image breed should be findable in our all breeds list
             let breedFound = allBreedNames.contains(randomImageBreed)
             
-            #expect(breedFound, "Iteration \(iteration): Random image breed '\(randomImageBreed)' should exist in the all-breeds list")
+            #expect(
+                breedFound,
+                "Iteration \(iteration): Random image breed '\(randomImageBreed)' should exist in the all-breeds list"
+            )
         }
     }
     
@@ -180,18 +197,20 @@ struct DogAPIServiceTests {
     func testDogImageResponseDecodingSuccess() throws {
         // Given
         let jsonString = """
-        {
-            "message": "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
-            "status": "success"
-        }
-        """
+      {
+          "message": "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+          "status": "success"
+      }
+      """
         let jsonData = jsonString.data(using: .utf8)!
         
         // When
         let response = try JSONDecoder().decode(DogImageResponse.self, from: jsonData)
         
         // Then
-        #expect(response.message == "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg", "Should decode message correctly")
+        #expect(
+            response.message == "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
+            "Should decode message correctly")
         #expect(response.status == "success", "Should decode status correctly")
     }
     
@@ -199,15 +218,15 @@ struct DogAPIServiceTests {
     func testAllBreedsResponseDecodingSuccess() throws {
         // Given
         let jsonString = """
-        {
-            "message": {
-                "terrier": ["scottish", "welsh"],
-                "bulldog": [],
-                "retriever": ["golden", "labrador"]
-            },
-            "status": "success"
-        }
-        """
+      {
+          "message": {
+              "terrier": ["scottish", "welsh"],
+              "bulldog": [],
+              "retriever": ["golden", "labrador"]
+          },
+          "status": "success"
+      }
+      """
         let jsonData = jsonString.data(using: .utf8)!
         
         // When
@@ -216,20 +235,24 @@ struct DogAPIServiceTests {
         // Then
         #expect(response.status == "success", "Should decode status correctly")
         #expect(response.message.count == 3, "Should have 3 breed groups")
-        #expect(response.message["terrier"] == ["scottish", "welsh"], "Should decode terrier sub-breeds correctly")
+        #expect(
+            response.message["terrier"] == ["scottish", "welsh"],
+            "Should decode terrier sub-breeds correctly")
         #expect(response.message["bulldog"] == [], "Should decode empty sub-breeds correctly")
-        #expect(response.message["retriever"] == ["golden", "labrador"], "Should decode retriever sub-breeds correctly")
+        #expect(
+            response.message["retriever"] == ["golden", "labrador"],
+            "Should decode retriever sub-breeds correctly")
     }
     
     @Test("AllBreedsResponse struct handles failure response")
     func testAllBreedsResponseDecodingFailure() throws {
         // Given
         let jsonString = """
-        {
-            "message": "Breed not found (master breed does not exist)",
-            "status": "error"
-        }
-        """
+      {
+          "message": "Breed not found (master breed does not exist)",
+          "status": "error"
+      }
+      """
         let jsonData = jsonString.data(using: .utf8)!
         
         // When & Then
@@ -237,23 +260,25 @@ struct DogAPIServiceTests {
             _ = try JSONDecoder().decode(AllBreedsResponse.self, from: jsonData)
         }
     }
-
+    
     @Test("DogImageResponse struct handles failure response")
     func testDogImageResponseDecodingFailure() throws {
         // Given
         let jsonString = """
-        {
-            "message": "Breed not found (master breed does not exist)",
-            "status": "error"
-        }
-        """
+      {
+          "message": "Breed not found (master breed does not exist)",
+          "status": "error"
+      }
+      """
         let jsonData = jsonString.data(using: .utf8)!
         
         // When
         let response = try JSONDecoder().decode(DogImageResponse.self, from: jsonData)
         
         // Then
-        #expect(response.message == "Breed not found (master breed does not exist)", "Should decode error message correctly")
+        #expect(
+            response.message == "Breed not found (master breed does not exist)",
+            "Should decode error message correctly")
         #expect(response.status == "error", "Should decode error status correctly")
     }
 }

@@ -1,5 +1,7 @@
 import Foundation
-@testable import DogBreedFlashCard
+import ModelsPackage
+
+@testable import ServicesPackage
 
 class FakeDogAPIService: DogAPIServiceProtocol {
     private let isFetchRandomDogImageBroken: Bool
@@ -46,7 +48,7 @@ class FakeDogAPIService: DogAPIServiceProtocol {
         .init(
             imageURL: "https://images.dog.ceo/breeds/sheepdog-indian/Himalayan_Sheepdog.jpg",
             breed: Breed(mainBreed: "Sheepdog", subBreed: "Himalayan")
-        )
+        ),
     ]
     
     private let breedGroups: [BreedGroup] = [
@@ -59,7 +61,7 @@ class FakeDogAPIService: DogAPIServiceProtocol {
         .init(mainBreed: "gordon", subBreeds: ["setter"]),
         .init(mainBreed: "deerhound", subBreeds: ["scottish"]),
         .init(mainBreed: "elkhound", subBreeds: ["norwegian"]),
-        .init(mainBreed: "Sheepdog", subBreeds: ["Himalayan"])
+        .init(mainBreed: "Sheepdog", subBreeds: ["Himalayan"]),
     ]
     
     init(

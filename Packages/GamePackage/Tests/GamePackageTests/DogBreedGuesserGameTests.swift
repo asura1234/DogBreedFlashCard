@@ -1,7 +1,8 @@
 import Foundation
+import ModelsPackage
 import Testing
 
-@testable import DogBreedFlashCard
+@testable import GamePackage
 
 struct DogBreedGuesserGameTests {
     

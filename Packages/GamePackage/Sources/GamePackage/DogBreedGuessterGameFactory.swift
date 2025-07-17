@@ -1,10 +1,13 @@
+import Foundation
+import ModelsPackage
+import ServicesPackage
+
 public protocol GameFactoryProtocol {
     func getNextGames(count: Int) async throws -> [DogBreedGuesserGame]
     func reset() async
 }
 
-
-public actor DogBreedGuesserGameFactory: GameFactoryProtocol{
+public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
     enum GameFactoryError: Error {
         case getNextGameError
         case generateNewGameError
@@ -23,7 +26,7 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol{
     
     private let maximumLoadFailureCount: Int
     
-    init(
+    public init(
         dogAPIService: DogAPIServiceProtocol,
         minimumGamesCount: Int = 20,
         maximumGamesCount: Int = 30,

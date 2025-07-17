@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		482C8FF22E288AEE00488827 /* ModelsPackage in Frameworks */ = {isa = PBXBuildFile; productRef = A97D5ACAAC344EEAB0ADA635 /* ModelsPackage */; };
+		482C8FF32E288AEE00488827 /* ServicesPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 06D95DBAB3F946CEAA2CD3C6 /* ServicesPackage */; };
+		482C8FF42E288AEE00488827 /* GamePackage in Frameworks */ = {isa = PBXBuildFile; productRef = E6E3E49B4EC240BE8AC20A81 /* GamePackage */; };
 		48B571972E2797C10004F861 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 48B681CE2E2696B20089E17D /* ConfettiSwiftUI */; };
 /* End PBXBuildFile section */
 
@@ -33,40 +36,9 @@
 		48B311702E260F6E00100627 /* DogBreedFlashCardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogBreedFlashCardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		48B681CC2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCard" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Game/Tests/DogBreedGuesserGameFactoryTests.swift,
-				Game/Tests/DogBreedGuesserGameTests.swift,
-				Game/Tests/FakeDogAPIService.swift,
-				Game/Tests/ProgressTrackerTests.swift,
-				Models/Tests/BreedAndBreedGroupTests.swift,
-				Services/Tests/DogAPIServiceTests.swift,
-			);
-			target = 48B311582E260F6B00100627 /* DogBreedFlashCard */;
-		};
-		48B681CD2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCardTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Game/Tests/DogBreedGuesserGameFactoryTests.swift,
-				Game/Tests/DogBreedGuesserGameTests.swift,
-				Game/Tests/FakeDogAPIService.swift,
-				Game/Tests/ProgressTrackerTests.swift,
-				Models/Tests/BreedAndBreedGroupTests.swift,
-				Services/Tests/DogAPIServiceTests.swift,
-			);
-			target = 48B311652E260F6E00100627 /* DogBreedFlashCardTests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		48B3115B2E260F6B00100627 /* DogBreedFlashCard */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				48B681CC2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCard" target */,
-				48B681CD2E2696B20089E17C /* Exceptions for "DogBreedFlashCard" folder in "DogBreedFlashCardTests" target */,
-			);
 			path = DogBreedFlashCard;
 			sourceTree = "<group>";
 		};
@@ -82,6 +54,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				482C8FF42E288AEE00488827 /* GamePackage in Frameworks */,
+				482C8FF32E288AEE00488827 /* ServicesPackage in Frameworks */,
+				482C8FF22E288AEE00488827 /* ModelsPackage in Frameworks */,
 				48B571972E2797C10004F861 /* ConfettiSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,6 +118,9 @@
 			name = DogBreedFlashCard;
 			packageProductDependencies = (
 				48B681CE2E2696B20089E17D /* ConfettiSwiftUI */,
+				A97D5ACAAC344EEAB0ADA635 /* ModelsPackage */,
+				06D95DBAB3F946CEAA2CD3C6 /* ServicesPackage */,
+				E6E3E49B4EC240BE8AC20A81 /* GamePackage */,
 			);
 			productName = DogBreedFlashCard;
 			productReference = 48B311592E260F6B00100627 /* DogBreedFlashCard.app */;
@@ -225,6 +203,9 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				48B571082E2791E60004F861 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+				C6A6ED32C5DC413695CEB20C /* XCLocalSwiftPackageReference "Packages/ModelsPackage" */,
+				7D218D3B52624D84877122DA /* XCLocalSwiftPackageReference "Packages/ServicesPackage" */,
+				A935A11D2C624918AE5FD524 /* XCLocalSwiftPackageReference "Packages/GamePackage" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 48B3115A2E260F6B00100627 /* Products */;
@@ -590,6 +571,21 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		7D218D3B52624D84877122DA /* XCLocalSwiftPackageReference "Packages/ServicesPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ServicesPackage;
+		};
+		A935A11D2C624918AE5FD524 /* XCLocalSwiftPackageReference "Packages/GamePackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/GamePackage;
+		};
+		C6A6ED32C5DC413695CEB20C /* XCLocalSwiftPackageReference "Packages/ModelsPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ModelsPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		48B571082E2791E60004F861 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -602,10 +598,25 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		06D95DBAB3F946CEAA2CD3C6 /* ServicesPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7D218D3B52624D84877122DA /* XCLocalSwiftPackageReference "Packages/ServicesPackage" */;
+			productName = ServicesPackage;
+		};
 		48B681CE2E2696B20089E17D /* ConfettiSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 48B571082E2791E60004F861 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
 			productName = ConfettiSwiftUI;
+		};
+		A97D5ACAAC344EEAB0ADA635 /* ModelsPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6A6ED32C5DC413695CEB20C /* XCLocalSwiftPackageReference "Packages/ModelsPackage" */;
+			productName = ModelsPackage;
+		};
+		E6E3E49B4EC240BE8AC20A81 /* GamePackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A935A11D2C624918AE5FD524 /* XCLocalSwiftPackageReference "Packages/GamePackage" */;
+			productName = GamePackage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
