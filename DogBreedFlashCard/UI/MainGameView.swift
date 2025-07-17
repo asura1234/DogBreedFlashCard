@@ -17,7 +17,6 @@ struct MainGameView: View {
         self.minimumGames = minimumGames
     }
     
-    // this is used for testing purposes
     init(gameFactory: GameFactoryProtocol) {
         self.gameFactory = gameFactory
         self.maxGames = 30

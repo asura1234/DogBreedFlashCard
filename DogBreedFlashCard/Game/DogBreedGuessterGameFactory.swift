@@ -97,9 +97,9 @@ actor DogBreedGuesserGameFactory: GameFactoryProtocol{
                 group.addTask {
                     do {
                         try await self.generateNewGame()
-                        return true  // Success
+                        return true
                     } catch {
-                        return false  // Failure
+                        return false
                     }
                 }
             }
