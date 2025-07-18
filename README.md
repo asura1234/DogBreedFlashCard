@@ -59,3 +59,6 @@ Run all tests with:
 - iOS 17.0+
 - Xcode 15.0+
 - Swift 5.9+
+
+## Licensing
+This project is licensed under the terms of the MIT license.
