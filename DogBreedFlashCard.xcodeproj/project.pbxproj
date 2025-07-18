@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		482944D82E2A59FC0011BDBB /* DogBreedGuesserGameFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482944D42E2A59FC0011BDBB /* DogBreedGuesserGameFactoryTests.swift */; };
+		482944D92E2A59FC0011BDBB /* DogBreedGuesserGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482944D52E2A59FC0011BDBB /* DogBreedGuesserGameTests.swift */; };
+		482944DA2E2A59FC0011BDBB /* FakeDogAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482944D62E2A59FC0011BDBB /* FakeDogAPIService.swift */; };
+		482944DB2E2A59FC0011BDBB /* ProgressTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482944D72E2A59FC0011BDBB /* ProgressTrackerTests.swift */; };
+		482944DD2E2A5A090011BDBB /* BreedAndBreedGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482944DC2E2A5A090011BDBB /* BreedAndBreedGroupTests.swift */; };
+		482944DF2E2A5A1C0011BDBB /* DogAPIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482944DE2E2A5A1C0011BDBB /* DogAPIServiceTests.swift */; };
 		482C8FF22E288AEE00488827 /* ModelsPackage in Frameworks */ = {isa = PBXBuildFile; productRef = A97D5ACAAC344EEAB0ADA635 /* ModelsPackage */; };
 		482C8FF32E288AEE00488827 /* ServicesPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 06D95DBAB3F946CEAA2CD3C6 /* ServicesPackage */; };
 		482C8FF42E288AEE00488827 /* GamePackage in Frameworks */ = {isa = PBXBuildFile; productRef = E6E3E49B4EC240BE8AC20A81 /* GamePackage */; };
@@ -31,6 +37,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		482944D42E2A59FC0011BDBB /* DogBreedGuesserGameFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DogBreedGuesserGameFactoryTests.swift; path = ../Packages/GamePackage/Tests/GamePackageTests/DogBreedGuesserGameFactoryTests.swift; sourceTree = "<group>"; };
+		482944D52E2A59FC0011BDBB /* DogBreedGuesserGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DogBreedGuesserGameTests.swift; path = ../Packages/GamePackage/Tests/GamePackageTests/DogBreedGuesserGameTests.swift; sourceTree = "<group>"; };
+		482944D62E2A59FC0011BDBB /* FakeDogAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FakeDogAPIService.swift; path = ../Packages/GamePackage/Tests/GamePackageTests/FakeDogAPIService.swift; sourceTree = "<group>"; };
+		482944D72E2A59FC0011BDBB /* ProgressTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProgressTrackerTests.swift; path = ../Packages/GamePackage/Tests/GamePackageTests/ProgressTrackerTests.swift; sourceTree = "<group>"; };
+		482944DC2E2A5A090011BDBB /* BreedAndBreedGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BreedAndBreedGroupTests.swift; path = ../Packages/ModelsPackage/Tests/ModelsPackageTests/BreedAndBreedGroupTests.swift; sourceTree = "<group>"; };
+		482944DE2E2A5A1C0011BDBB /* DogAPIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DogAPIServiceTests.swift; path = ../Packages/ServicesPackage/Tests/ServicesPackageTests/DogAPIServiceTests.swift; sourceTree = "<group>"; };
 		48B311592E260F6B00100627 /* DogBreedFlashCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DogBreedFlashCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B311662E260F6E00100627 /* DogBreedFlashCardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogBreedFlashCardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		48B311702E260F6E00100627 /* DogBreedFlashCardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DogBreedFlashCardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,9 +90,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		482944E02E2A5A420011BDBB /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				482944DE2E2A5A1C0011BDBB /* DogAPIServiceTests.swift */,
+				482944DC2E2A5A090011BDBB /* BreedAndBreedGroupTests.swift */,
+				482944D42E2A59FC0011BDBB /* DogBreedGuesserGameFactoryTests.swift */,
+				482944D52E2A59FC0011BDBB /* DogBreedGuesserGameTests.swift */,
+				482944D62E2A59FC0011BDBB /* FakeDogAPIService.swift */,
+				482944D72E2A59FC0011BDBB /* ProgressTrackerTests.swift */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
 		48B311502E260F6B00100627 = {
 			isa = PBXGroup;
 			children = (
+				482944E02E2A5A420011BDBB /* UnitTests */,
 				48B3115B2E260F6B00100627 /* DogBreedFlashCard */,
 				48B311732E260F6E00100627 /* DogBreedFlashCardUITests */,
 				48B3115A2E260F6B00100627 /* Products */,
@@ -255,6 +281,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				482944DF2E2A5A1C0011BDBB /* DogAPIServiceTests.swift in Sources */,
+				482944DD2E2A5A090011BDBB /* BreedAndBreedGroupTests.swift in Sources */,
+				482944D82E2A59FC0011BDBB /* DogBreedGuesserGameFactoryTests.swift in Sources */,
+				482944D92E2A59FC0011BDBB /* DogBreedGuesserGameTests.swift in Sources */,
+				482944DA2E2A59FC0011BDBB /* FakeDogAPIService.swift in Sources */,
+				482944DB2E2A59FC0011BDBB /* ProgressTrackerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
