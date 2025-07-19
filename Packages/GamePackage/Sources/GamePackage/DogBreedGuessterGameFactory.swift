@@ -30,7 +30,7 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
         dogAPIService: DogAPIServiceProtocol,
         minimumGamesCount: Int = 20,
         maximumGamesCount: Int = 30,
-        maximumLoadFailureCount: Int = 10
+        maximumLoadFailureCount: Int = 5
     ) async throws {
         self.dogAPIService = dogAPIService
         self.gamesQueue = []

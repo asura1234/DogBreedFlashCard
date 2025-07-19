@@ -7,7 +7,7 @@ import SwiftUI
 struct MainGameView: View {
     @State private var games: [DogBreedGuesserGame] = []
     @State private var progressTracker = ProgressTracker()
-    @State private var isInitialLoading = true
+    @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var gameFactory: GameFactoryProtocol?
 
@@ -27,11 +27,12 @@ struct MainGameView: View {
 
     var body: some View {
         Group {
-            if isInitialLoading {
+            if isLoading {
                 loadingView
-            } else if let errorMessage = errorMessage {
+            } else if games.isEmpty {
+                let errorMessage = self.errorMessage ?? "No games available. Please try again later."
                 errorView(errorMessage)
-            } else if !games.isEmpty {
+            } else  {
                 gameView
             }
         }
@@ -64,6 +65,8 @@ struct MainGameView: View {
                 .multilineTextAlignment(.center)
                 .padding()
             Button("Retry") {
+                self.isLoading = true
+                self.errorMessage = nil
                 Task {
                     await loadMoreGames()
                 }
@@ -146,12 +149,12 @@ struct MainGameView: View {
 
     @MainActor
     private func initializeFactory() async {
-        isInitialLoading = true
+        isLoading = true
         errorMessage = nil
 
         if gameFactory != nil {
             await loadMoreGames()
-            isInitialLoading = false
+            isLoading = false
             return
         }
 
@@ -164,7 +167,7 @@ struct MainGameView: View {
             await loadMoreGames()
         } catch {
             errorMessage = "Failed to initialize game factory: \(error.localizedDescription)"
-            isInitialLoading = false
+            isLoading = false
         }
     }
 
@@ -185,10 +188,9 @@ struct MainGameView: View {
             errorMessage = "Failed to load more games: \(error.localizedDescription)"
         }
 
-        isInitialLoading = false
+        isLoading = false
     }
 
-    @MainActor
     private func moveToNextGame() {
         guard !games.isEmpty else { return }
 
