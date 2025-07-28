@@ -14,7 +14,7 @@ public class FakeDogBreedGuesserGameFactory: GameFactoryProtocol {
                             imageURL: "https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg",
                             breed: Breed(mainBreed: "hound", subBreed: "afghan")
                         ),
-                    wrongBreedName: "Golden Retriever"
+                    wrongBreedNames: ["Golden Retriever"]
                 ),
             count: count
         )

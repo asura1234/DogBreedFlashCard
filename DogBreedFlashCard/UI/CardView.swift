@@ -168,7 +168,7 @@ struct CardView: View {
     )
     let sampleGame = DogBreedGuesserGame(
         dogImage: sampleDogImage,
-        wrongBreedName: "Husky"
+        wrongBreedNames: ["Husky"]
     )
     CardView(game: sampleGame)
 }

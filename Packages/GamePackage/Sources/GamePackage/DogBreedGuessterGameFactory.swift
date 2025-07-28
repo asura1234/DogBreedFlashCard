@@ -25,9 +25,12 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
     private let maximumGamesCount: Int
 
     private let maximumLoadFailureCount: Int
+    
+    private let numOfWrongChoices: Int
 
     public init(
         dogAPIService: DogAPIServiceProtocol,
+        numOfChoices: Int = 2,
         minimumGamesCount: Int = 20,
         maximumGamesCount: Int = 30,
         maximumLoadFailureCount: Int = 5
@@ -35,6 +38,7 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
         self.dogAPIService = dogAPIService
         self.gamesQueue = []
         self.allBreedNames = []
+        self.numOfWrongChoices = numOfChoices
         self.minimumGamesCount = minimumGamesCount
         self.maximumGamesCount = maximumGamesCount
         self.maximumLoadFailureCount = maximumLoadFailureCount
@@ -82,18 +86,22 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
 
     private func generateNewGame() async throws {
         let dogImage = try await dogAPIService.fetchRandomDogImage()
-        let wrongBreedName = try getRandomWrongBreedName(excludeFrom: [dogImage.breed.name])
-        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
+        let wrongBreedNames = try getRandomWrongBreedNames(excludeFrom: [dogImage.breed.name], count: numOfWrongChoices)
+        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
         gamesQueue.append(game)
     }
 
-    private func getRandomWrongBreedName(excludeFrom list: [String]) throws -> String {
-        guard !allBreedNames.isEmpty,
-              let randomWrongBreedName = allBreedNames.filter({ !list.contains($0) }).randomElement()
-        else {
+    private func getRandomWrongBreedNames(excludeFrom list: [String], count: Int) throws -> [String] {
+        guard !allBreedNames.isEmpty else {
             throw GameFactoryError.generateNewGameError
         }
-        return randomWrongBreedName
+        let randomBreedNames = Array(
+            allBreedNames.filter({ !list.contains($0) }).shuffled().prefix(count)
+        )
+        guard randomBreedNames.count == count else {
+            throw GameFactoryError.generateNewGameError
+        }
+        return randomBreedNames
     }
 
     private func ensureMinimumGames() async {

@@ -8,23 +8,23 @@ struct DogBreedGuesserGameTests {
     let dogImage = DogImage(
         imageURL: "https://images.dog.ceo/breeds/pembroke/n02113023_1168.jpg",
         breed: Breed(mainBreed: "Pembroke", subBreed: nil))
-    let wrongBreedName = "Husky"
+    let wrongBreedNames = ["Husky"]
 
     @Test("DogBreedGuesserGame is initialized correctly")
     func testInitialization() {
         // When
-        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
+        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
 
         // Then
         #expect(game.options.count == 2, "Options should contain 2 items")
         #expect(
             game.options.contains(dogImage.breed.name), "Options should contain the correct breed name")
-        #expect(game.options.contains(wrongBreedName), "Options should contain the wrong breed name")
+        #expect(game.options.contains(wrongBreedNames), "Options should contain the wrong breed name")
     }
 
     @Test("Result is correct when the option is the correct breed name")
     func testCorrectOption() {
-        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
+        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
 
         // When
         let isCorrect = game.isCorrect(option: dogImage.breed.name)
@@ -35,10 +35,11 @@ struct DogBreedGuesserGameTests {
 
     @Test("Result is incorrect when the option is the wrong breed name")
     func testIncorrectOption() {
-        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
+        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
 
         // When
-        let isCorrect = game.isCorrect(option: wrongBreedName)
+        // swiftlint:disable:next force_unwrapping
+        let isCorrect = game.isCorrect(option: wrongBreedNames.first!)
 
         // Then
         #expect(!isCorrect, "The wrong breed name should be incorrect")
@@ -50,7 +51,7 @@ struct DogBreedGuesserGameTests {
         var wins = 0
         for _ in 1...40 {
             do {
-                let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
+                let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
                 let result = try game.chooseOption(index: 0)
                 wins += result ? 1 : 0
             } catch {
@@ -64,7 +65,7 @@ struct DogBreedGuesserGameTests {
 
     @Test("Choosing an invalid option index throws an error")
     func testInvalidOptionIndex() {
-        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedName: wrongBreedName)
+        let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
 
         var invalidOptionIndexErrorThrown = false
         // When

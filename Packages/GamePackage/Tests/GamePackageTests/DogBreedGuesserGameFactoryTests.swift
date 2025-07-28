@@ -58,8 +58,8 @@ struct DogBreedGuesserGameFactoryTests {
                     "getNextGame should return a valid DogBreedGuesserGame with a non-empty breed name"
                 )
                 #expect(
-                    game.options.count == 2,
-                    "getNextGame should return a valid DogBreedGuesserGame with two options to choose from"
+                    game.options.count >= 2,
+                    "getNextGame should return a valid DogBreedGuesserGame with at least two options to choose from"
                 )
                 #expect(
                     game.options[0] != game.options[1],
