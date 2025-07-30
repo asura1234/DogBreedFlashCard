@@ -8,7 +8,7 @@ struct DogBreedGuesserGameTests {
     let dogImage = DogImage(
         imageURL: "https://images.dog.ceo/breeds/pembroke/n02113023_1168.jpg",
         breed: Breed(mainBreed: "Pembroke", subBreed: nil))
-    let wrongBreedNameGroups = [["Husky"], ["Golden Retriever", "Poodle", "Husky"]]
+    let wrongBreedNameGroups = [["Husky"], ["Golden Retriever", "Poodle", "Husky"], ["Poodle", "Husky"]]
 
     @Test("DogBreedGuesserGame is initialized correctly")
     func testInitialization() {

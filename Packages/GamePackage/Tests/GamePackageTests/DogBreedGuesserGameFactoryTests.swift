@@ -62,8 +62,8 @@ struct DogBreedGuesserGameFactoryTests {
                     "getNextGame should return a valid DogBreedGuesserGame with at least two options to choose from"
                 )
                 #expect(
-                    game.options[0] != game.options[1],
-                    "getNextGame should return a valid DogBreedGuesserGame with exactly two disctinct options"
+                    game.options.count == Set(game.options).count,
+                    "getNextGame should return a valid DogBreedGuesserGame with exactly unique options"
                 )
                 let allBreedNames = await gameFactory.allBreedNames
                 #expect(
