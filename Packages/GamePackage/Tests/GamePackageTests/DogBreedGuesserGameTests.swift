@@ -16,7 +16,7 @@ struct DogBreedGuesserGameTests {
         let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
 
         // Then
-        #expect(game.options.count == 2, "Options should contain 2 items")
+        #expect(game.options.count == wrongBreedNames.count, "Options should contain 2 items")
         #expect(
             game.options.contains(dogImage.breed.name), "Options should contain the correct breed name")
         #expect(game.options.contains(wrongBreedNames), "Options should contain the wrong breed name")
@@ -37,12 +37,14 @@ struct DogBreedGuesserGameTests {
     func testIncorrectOption() {
         let game = DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
 
-        // When
         // swiftlint:disable:next force_unwrapping
-        let isCorrect = game.isCorrect(option: wrongBreedNames.first!)
-
-        // Then
-        #expect(!isCorrect, "The wrong breed name should be incorrect")
+        for wrongBreedName in wrongBreedNames {
+            // When
+            let isCorrect = game.isCorrect(option: wrongBreedName)
+            // Then
+            #expect(!isCorrect, "The wrong breed name should be incorrect")
+        }
+        
     }
 
     @Test("Options are shuffled randomly")
@@ -70,7 +72,7 @@ struct DogBreedGuesserGameTests {
         var invalidOptionIndexErrorThrown = false
         // When
         do {
-            _ = try game.chooseOption(index: 2)
+            _ = try game.chooseOption(index: wrongBreedNames.count)
         } catch DogBreedGuesserGame.GameError.invalidOptionIndex {
             invalidOptionIndexErrorThrown = true
         } catch {
