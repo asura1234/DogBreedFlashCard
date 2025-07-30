@@ -18,8 +18,7 @@ struct DogAPIServiceTests {
         #expect(dogImage.imageURL.hasPrefix("https://"), "Image URL should start with https://")
         #expect(dogImage.imageURL.contains("images.dog.ceo"), "Image URL should be from dog.ceo domain")
         #expect(!dogImage.breed.name.isEmpty, "Breed should not be empty")
-        #expect(dogImage.breed.name != "unknown", "Breed should be extracted from URL")
-        #expect(dogImage.breed.name != "unknown", "Breed should be extracted from URL")
+        #expect(dogImage.breed.name != "Unknown", "Breed should be extracted from URL")
     }
 
     @Test("Fetch random dog image breed extraction works correctly")
