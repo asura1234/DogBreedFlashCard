@@ -5,7 +5,7 @@ import GamePackage
 struct MainGameViewPreview: PreviewProvider {
     static var testGame: DogBreedGuesserGame {
         let dogImage = DogImage(
-            imageURL: "https://images.dog.ceo/breeds/pembroke/n02113023_1168.jpg",
+            imageURL: "https://images.dog.ceo/breeds/pembroke/n02113023_2256.jpg",
             breed: Breed(mainBreed: "Pembroke", subBreed: nil))
         let wrongBreedNames = ["Golden Retriever", "Poodle", "Husky"]
         return DogBreedGuesserGame(dogImage: dogImage, wrongBreedNames: wrongBreedNames)
