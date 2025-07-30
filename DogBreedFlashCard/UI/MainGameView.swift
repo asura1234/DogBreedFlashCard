@@ -203,7 +203,12 @@ struct MainGameView: View {
             games.append(contentsOf: moreGames)
             viewState = .loaded
         } catch {
-            viewState = .error("Failed to load more games: \(error.localizedDescription)")
+            // only show error if we have less than minimum games
+            if games.count < minimumGames {
+                viewState = .error("Failed to load more games: \(error.localizedDescription)")
+            } else {
+                viewState = .loaded
+            }
         }
     }
 
