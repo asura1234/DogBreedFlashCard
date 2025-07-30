@@ -5,39 +5,57 @@ import ServicesPackage
 import SwiftUI
 
 struct MainGameView: View {
+    enum ViewState {
+        case loading
+        case error(String)
+        case loaded
+    }
+    
     @State private var games: [DogBreedGuesserGame] = []
     @State private var progressTracker = ProgressTracker()
-    @State private var isLoading = true
-    @State private var errorMessage: String?
+    @State private var viewState: ViewState = .loading
     @State private var gameFactory: GameFactoryProtocol?
+    @State private var shouldInitialize = true
 
-    private let maxGames: Int
-    private let minimumGames: Int
+    private var maxGames: Int = 30
+    private var minimumGames: Int = 20
 
     init(maxGames: Int = 30, minimumGames: Int = 20) {
         self.maxGames = maxGames
         self.minimumGames = minimumGames
     }
 
+    // this is used with fake game factory for UI testing
     init(gameFactory: GameFactoryProtocol) {
         self.gameFactory = gameFactory
-        self.maxGames = 30
-        self.minimumGames = 10
     }
-
+    
+    // this is used for previews
+    init(state: ViewState, games: [DogBreedGuesserGame] = []) {
+        self._viewState = State(initialValue: state)
+        self._games = State(initialValue: games)
+        self._shouldInitialize = State(initialValue: false)
+    }
+    
     var body: some View {
         Group {
-            if isLoading {
+            switch viewState {
+            case .loading:
                 loadingView
-            } else if games.isEmpty {
-                let errorMessage = self.errorMessage ?? "No games available. Please try again later."
-                errorView(errorMessage)
-            } else  {
-                gameView
+            case .error(let message):
+                errorView(message)
+            case .loaded:
+                if games.isEmpty {
+                    errorView("No games available. Please try again later.")
+                } else {
+                    gameView
+                }
             }
         }
         .task {
-            await initializeFactory()
+            if shouldInitialize {
+                await initializeFactory()
+            }
         }
     }
 
@@ -65,8 +83,7 @@ struct MainGameView: View {
                 .multilineTextAlignment(.center)
                 .padding()
             Button("Retry") {
-                self.isLoading = true
-                self.errorMessage = nil
+                viewState = .loading
                 Task {
                     await loadMoreGames()
                 }
@@ -149,12 +166,10 @@ struct MainGameView: View {
 
     @MainActor
     private func initializeFactory() async {
-        isLoading = true
-        errorMessage = nil
+        viewState = .loading
 
         if gameFactory != nil {
             await loadMoreGames()
-            isLoading = false
             return
         }
 
@@ -166,29 +181,29 @@ struct MainGameView: View {
             )
             await loadMoreGames()
         } catch {
-            errorMessage = "Failed to initialize game factory: \(error.localizedDescription)"
-            isLoading = false
+            viewState = .error("Failed to initialize game factory: \(error.localizedDescription)")
         }
     }
 
     @MainActor
     private func loadMoreGames() async {
         guard let factory = gameFactory else {
-            errorMessage = "Game factory not initialized"
+            viewState = .error("Game factory not initialized")
             return
         }
 
         do {
-            if games.count >= minimumGames { return }
+            if games.count >= minimumGames { 
+                viewState = .loaded
+                return 
+            }
             let gamesNeeded = maxGames - games.count
             let moreGames = try await factory.getNextGames(count: gamesNeeded)
             games.append(contentsOf: moreGames)
-            errorMessage = nil
+            viewState = .loaded
         } catch {
-            errorMessage = "Failed to load more games: \(error.localizedDescription)"
+            viewState = .error("Failed to load more games: \(error.localizedDescription)")
         }
-
-        isLoading = false
     }
 
     private func moveToNextGame() {
