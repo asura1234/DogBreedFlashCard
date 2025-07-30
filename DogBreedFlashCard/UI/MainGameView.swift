@@ -1,5 +1,6 @@
 import AVFoundation
 import ConfettiSwiftUI
+import ModelsPackage
 import GamePackage
 import ServicesPackage
 import SwiftUI
