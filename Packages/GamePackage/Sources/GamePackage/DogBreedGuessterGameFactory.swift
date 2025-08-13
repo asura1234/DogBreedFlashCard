@@ -47,11 +47,11 @@ public actor DogBreedGuesserGameFactory: GameFactoryProtocol {
 
     public func getNextGames(count: Int = 10) async throws -> [DogBreedGuesserGame] {
         if gamesQueue.count > count {
+            let result = Array(gamesQueue.prefix(count))
+            gamesQueue.removeFirst(count)
             Task {
                 await ensureMinimumGames()
             }
-            let result = Array(gamesQueue.prefix(count))
-            gamesQueue.removeFirst(count)
             return result
         } else {
             await ensureMinimumGames()
